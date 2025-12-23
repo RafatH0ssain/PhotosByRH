@@ -19,15 +19,15 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="bg-background text-foreground">
-      <body className={`${anton.variable} ${geist.variable} font-sans`}>
-        <header className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md border-b border-white/10">
+    <html lang="en" className="dark" style={{ colorScheme: 'dark', backgroundColor: 'black' }}>
+      <body className={`${anton.variable} ${geist.variable} font-sans bg-black text-white`}>
+        <header className="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-md border-b border-white/10">
           <Navbar />
         </header>
 
-        <main className="pt-24 min-h-screen">{children}</main>
+        <main className="pt-24 min-h-screen bg-black">{children}</main>
 
-        <footer className="py-10 text-center text-xs text-gray-500 border-t border-white/10">
+        <footer className="py-10 text-center text-xs text-gray-500 border-t border-white/10 bg-black">
           © {new Date().getFullYear()} PhotosByRH. All Rights Reserved.
         </footer>
       </body>

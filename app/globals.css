@@ -1,26 +1,42 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* v4 uses @theme for variables, but we will use standard CSS for global overrides */
+@theme {
+  --color-background: #000000;
+  --color-foreground: #ffffff;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+/* Hard-lock the background to black and text to white */
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    color-scheme: dark !important;
+  }
+
+  html, 
+  body {
+    @apply bg-black text-white;
+    background-color: #000000 !important;
+    color: #ffffff !important;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    /* This prevents the white 'rubber-band' effect on iOS when scrolling */
+    overscroll-behavior: none; 
+  }
+
+  /* Force every section to be black */
+  main, section, div, header, footer {
+    @apply bg-black text-white;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Fix for browser Autofill turning inputs white/yellow */
+@layer utilities {
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover, 
+  input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #ffffff !important;
+    -webkit-box-shadow: 0 0 0px 1000px #000000 inset !important;
+    transition: background-color 5000s ease-in-out 0s;
+  }
 }
