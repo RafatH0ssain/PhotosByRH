@@ -14,7 +14,14 @@ export default function GalleryPage() {
             className="w-full bg-neutral-900 rounded-lg overflow-hidden"
             style={{ height: item % 2 === 0 ? '400px' : '250px' }}
           >
-            {/* <img src="..." className="w-full h-full object-cover" /> */}
+            <img src="D:\Pictures\photosbyrh\public\Personal Event(s)\Personal (1).jpg" className="w-full h-full object-cover" />
+            <img src="D:\Pictures\photosbyrh\public\Personal Event(s)\Personal (2).jpg" className="w-full h-full object-cover" />
+            <img src="D:\Pictures\photosbyrh\public\Personal Event(s)\Personal (3).jpg" className="w-full h-full object-cover" />
+            <img src="D:\Pictures\photosbyrh\public\Personal Event(s)\Personal (4).jpg" className="w-full h-full object-cover" />
+            <img src="D:\Pictures\photosbyrh\public\Personal Event(s)\Personal (5).jpg" className="w-full h-full object-cover" />
+            <img src="D:\Pictures\photosbyrh\public\Personal Event(s)\Personal (6).jpg" className="w-full h-full object-cover" />
+            <img src="D:\Pictures\photosbyrh\public\Personal Event(s)\Personal (7).jpg" className="w-full h-full object-cover" />
+            <img src="D:\Pictures\photosbyrh\public\Personal Event(s)\Personal (8).jpg" className="w-full h-full object-cover" />
           </motion.div>
         ))}
       </div>
