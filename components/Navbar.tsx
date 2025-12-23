@@ -17,13 +17,17 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center relative">
-      {/* Logo - Keep z-index high so it stays above the drawer if needed */}
-      <Link href="/" className="font-anton text-2xl tracking-tighter text-white z-[70]">
+    <nav className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      {/* Logo - Always visible and on top */}
+      <Link 
+        href="/" 
+        className="font-anton text-2xl tracking-tighter text-white z-[100]"
+        onClick={() => setIsOpen(false)}
+      >
         PHOTOSBYRH
       </Link>
 
-      {/* Desktop Menu - Hidden on mobile */}
+      {/* Desktop Menu */}
       <div className="hidden md:flex gap-8 text-sm uppercase tracking-widest font-medium">
         {navLinks.map((link) => (
           <Link
@@ -38,55 +42,57 @@ export default function Navbar() {
         ))}
       </div>
 
-      {/* Mobile Hamburger Button - Higher z-index to stay on top of the drawer */}
+      {/* Mobile Hamburger Button - Locked to z-100 to stay above the blur */}
       <button 
-        className="md:hidden z-[70] flex flex-col gap-1.5 p-2" 
+        className="md:hidden z-[100] flex flex-col gap-1.5 p-2 focus:outline-none" 
         onClick={() => setIsOpen(!isOpen)}
-        aria-label="Toggle Menu"
       >
-        <span className={`h-0.5 w-6 bg-white transition-all duration-300 ${isOpen ? "rotate-45 translate-y-2" : ""}`} />
-        <span className={`h-0.5 w-6 bg-white transition-all duration-300 ${isOpen ? "opacity-0" : ""}`} />
-        <span className={`h-0.5 w-6 bg-white transition-all duration-300 ${isOpen ? "-rotate-45 -translate-y-2" : ""}`} />
+        <motion.span 
+          animate={isOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
+          className="h-0.5 w-6 bg-white block" 
+        />
+        <motion.span 
+          animate={isOpen ? { opacity: 0 } : { opacity: 1 }}
+          className="h-0.5 w-6 bg-white block" 
+        />
+        <motion.span 
+          animate={isOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
+          className="h-0.5 w-6 bg-white block" 
+        />
       </button>
 
-      {/* Mobile Menu Drawer Overlay */}
+      {/* Full Screen Overlay Menu */}
       <AnimatePresence>
         {isOpen && (
-          <>
-            {/* Dark Backdrop to dim the main content */}
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsOpen(false)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[50] md:hidden"
-            />
-
-            {/* The Drawer */}
-            <motion.div
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed top-0 right-0 h-full w-[80%] max-w-[300px] bg-[#0a0a0a] border-l border-white/10 z-[60] md:hidden shadow-2xl"
-            >
-              {/* Vertically Centered List */}
-              <div className="flex flex-col items-center justify-center h-full gap-10">
-                {navLinks.map((link) => (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 w-screen h-screen bg-black/90 backdrop-blur-xl z-[90] flex items-center justify-center md:hidden"
+          >
+            <div className="flex flex-col items-center justify-center gap-12">
+              {navLinks.map((link, i) => (
+                <motion.div
+                  key={link.href}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                >
                   <Link
-                    key={link.href}
                     href={link.href}
                     onClick={() => setIsOpen(false)}
-                    className={`font-anton text-3xl uppercase tracking-widest transition-colors ${
-                      isActive(link.href) ? "text-white" : "text-neutral-500 hover:text-neutral-300"
+                    className={`font-anton text-5xl uppercase tracking-tighter transition-all ${
+                      isActive(link.href) 
+                        ? "text-white scale-110" 
+                        : "text-neutral-600 hover:text-neutral-200"
                     }`}
                   >
                     {link.name}
                   </Link>
-                ))}
-              </div>
-            </motion.div>
-          </>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </nav>
