@@ -19,7 +19,6 @@ export default function GalleryPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-6 pb-20">
-      <h1 className="font-anton text-5xl mb-10 uppercase">Portfolio</h1>
       <div className="columns-1 md:columns-2 lg:columns-3 gap-4 space-y-4">
         {images.map((src, i) => (
           <motion.div
