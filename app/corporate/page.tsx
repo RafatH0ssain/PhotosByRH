@@ -1,7 +1,8 @@
 "use client";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
-export default function GalleryPage() {
+export default function CorporateGallery() {
   const corporateImages = [
     "/Corporate Event(s)/Corporate (1).jpg",
     "/Corporate Event(s)/Corporate (2).jpg",
@@ -20,12 +21,21 @@ export default function GalleryPage() {
         {corporateImages.map((src, i) => (
           <motion.div
             key={i}
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            className="w-full bg-neutral-900 rounded-lg overflow-hidden"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="w-full bg-neutral-900 rounded-lg overflow-hidden relative"
             style={{ height: i % 2 === 0 ? "400px" : "250px" }}
           >
-            <img src={src} className="w-full h-full object-cover" />
+            <Image 
+              src={src} 
+              alt={`Corporate ${i + 1}`}
+              fill
+              className="object-cover hover:scale-105 transition-transform duration-700"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              priority={i < 3}
+            />
           </motion.div>
         ))}
       </div>

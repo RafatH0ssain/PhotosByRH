@@ -4,11 +4,12 @@ import Image from "next/image";
 
 export default function GalleryPage() {
   const images = [
+    "/Brand(s)/Brands (1).jpeg",
     "/Brand(s)/Brands (1).jpg",
-    "/Brand(s)/Brands (2).jpg",
-    "/Brand(s)/Brands (3).jpg",
-    "/Brand(s)/Brands (4).jpg",
-    "/Brand(s)/Brands (5).jpg",
+    "/Brand(s)/Brands (2).JPG",
+    "/Brand(s)/Brands (3).JPG",
+    "/Brand(s)/Brands (4).JPG",
+    "/Brand(s)/Brands (5).JPG",
     "/Brand(s)/Brands (6).jpg",
     "/Brand(s)/Brands (7).jpg",
     "/Brand(s)/Brands (8).jpg",
