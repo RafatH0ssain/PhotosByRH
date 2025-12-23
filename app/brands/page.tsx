@@ -2,10 +2,6 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 
-export const metadata = {
-  title: "Brands",
-};
-
 export default function GalleryPage() {
   const images = [
     "/Brand(s)/Brands (1).jpeg",

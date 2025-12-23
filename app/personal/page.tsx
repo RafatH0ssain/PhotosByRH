@@ -2,10 +2,6 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 
-export const metadata = {
-  title: "Personal Events",
-};
-
 export default function PersonalGallery() {
   const personalImages = [
     "/Personal Event(s)/Personal (1).jpg",
