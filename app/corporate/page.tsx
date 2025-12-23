@@ -2,10 +2,6 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 
-export const metadata = {
-  title: "Corporate Events",
-};
-
 export default function CorporateGallery() {
   const corporateImages = [
     "/Corporate Event(s)/Corporate (1).jpg",

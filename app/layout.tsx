@@ -1,18 +1,17 @@
 import { Anton, Geist } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar"; // Import the navbar we just made
+import Navbar from "@/components/Navbar";
 import { Metadata } from "next";
 
 const anton = Anton({ weight: "400", subsets: ["latin"], variable: "--font-anton" });
 const geist = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
 
-// THIS CHANGED THE TAB NAME
+
 export const metadata: Metadata = {
   title: {
     default: "PhotosByRH",
     template: "%s | PhotosByRH",
   },
-  description: "Professional Photography Portfolio",
   icons: {
     icon: "/icon.png",
   },
