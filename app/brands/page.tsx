@@ -1,5 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function GalleryPage() {
   const images = [
@@ -17,17 +18,26 @@ export default function GalleryPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-6 pb-20">
-      <h1 className="font-anton text-5xl mb-10 uppercase">Corporate Portfolio</h1>
+      <h1 className="font-anton text-5xl mb-10 uppercase">Portfolio</h1>
       <div className="columns-1 md:columns-2 lg:columns-3 gap-4 space-y-4">
         {images.map((src, i) => (
           <motion.div
             key={i}
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            className="w-full bg-neutral-900 rounded-lg overflow-hidden"
-            style={{ height: i % 2 === 0 ? "400px" : "250px" }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }} // Triggers slightly before the image is visible
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className="relative w-full break-inside-avoid rounded-lg overflow-hidden bg-neutral-900"
           >
-            <img src={src} className="w-full h-full object-cover" />
+            <Image
+              src={src}
+              alt={`Gallery image ${i}`}
+              width={800} // Set a base width
+              height={1200} // Set a base height (it will auto-adjust with sizes)
+              className="w-full h-auto object-cover hover:scale-105 transition-transform duration-500"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              priority={i < 3} // Loads the first 3 images immediately
+            />
           </motion.div>
         ))}
       </div>
