@@ -6,7 +6,7 @@ import Link from "next/link";
 export default function Home() {
   // Array of your 9 main landing page images
   const images = [
-    "/Landing/Home (1).jepg",
+    "/Landing/Home (1).jpeg",
     "/Landing/Home (1).jpg",
     "/Landing/Home (2).JPG",
     "/Landing/Home (3).JPG",
