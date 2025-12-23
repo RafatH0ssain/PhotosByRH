@@ -14,7 +14,16 @@ export default function GalleryPage() {
             className="w-full bg-neutral-900 rounded-lg overflow-hidden"
             style={{ height: item % 2 === 0 ? '400px' : '250px' }}
           >
-            {/* <img src="..." className="w-full h-full object-cover" /> */}
+            <img src="D:\Pictures\photosbyrh\public\Brand(s)\Brands (1).jpeg" className="w-full h-full object-cover" />
+            <img src="D:\Pictures\photosbyrh\public\Brand(s)\Brands (2).jpeg" className="w-full h-full object-cover" />
+            <img src="D:\Pictures\photosbyrh\public\Brand(s)\Brands (3).jpeg" className="w-full h-full object-cover" />
+            <img src="D:\Pictures\photosbyrh\public\Brand(s)\Brands (4).jpeg" className="w-full h-full object-cover" />
+            <img src="D:\Pictures\photosbyrh\public\Brand(s)\Brands (5).jpeg" className="w-full h-full object-cover" />
+            <img src="D:\Pictures\photosbyrh\public\Brand(s)\Brands (6).jpeg" className="w-full h-full object-cover" />
+            <img src="D:\Pictures\photosbyrh\public\Brand(s)\Brands (7).jpeg" className="w-full h-full object-cover" />
+            <img src="D:\Pictures\photosbyrh\public\Brand(s)\Brands (8).jpeg" className="w-full h-full object-cover" />
+            <img src="D:\Pictures\photosbyrh\public\Brand(s)\Brands (9).jpeg" className="w-full h-full object-cover" />
+            <img src="D:\Pictures\photosbyrh\public\Brand(s)\Brands (10).jpeg" className="w-full h-full object-cover" />
           </motion.div>
         ))}
       </div>
