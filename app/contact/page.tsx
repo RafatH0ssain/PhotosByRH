@@ -1,35 +1,95 @@
 "use client";
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 export default function Contact() {
   const [status, setStatus] = useState("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setStatus("Sending...");
-    const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData);
+    setStatus("SENDING...");
+    
+    const form = e.currentTarget;
+    const formData = new FormData(form);
 
-    const res = await fetch("/api/send", {
+    // Using Formspree - Replace 'YOUR_FORM_ID' after following the steps below
+    const response = await fetch("https://formspree.io/f/mjgbljnl", {
       method: "POST",
-      body: JSON.stringify(data),
+      body: formData,
+      headers: {
+        'Accept': 'application/json'
+      }
     });
 
-    if (res.ok) setStatus("Message Sent!");
-    else setStatus("Error. Please try again.");
+    if (response.ok) {
+      setStatus("MESSAGE SENT! I WILL GET BACK TO YOU SHORTLY.");
+      form.reset();
+    } else {
+      setStatus("ERROR. PLEASE TRY AGAIN OR EMAIL ME DIRECTLY.");
+    }
   };
 
   return (
-    <div className="max-w-2xl mx-auto px-6 py-20">
-      <h1 className="font-anton text-5xl mb-8 uppercase">Let's Connect</h1>
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <input name="name" placeholder="NAME" required className="w-full bg-transparent border-b border-white/20 py-3 outline-none focus:border-white transition" />
-        <input name="email" type="email" placeholder="EMAIL" required className="w-full bg-transparent border-b border-white/20 py-3 outline-none focus:border-white transition" />
-        <input name="phone" type="tel" placeholder="PHONE NUMBER" required className="w-full bg-transparent border-b border-white/20 py-3 outline-none focus:border-white transition" />
-        <textarea name="message" rows={4} placeholder="YOUR MESSAGE" required className="w-full bg-transparent border-b border-white/20 py-3 outline-none focus:border-white transition" />
-        <button className="bg-white text-black font-anton px-10 py-3 hover:bg-neutral-200 transition">SUBMIT</button>
-        <p className="mt-4 text-sm">{status}</p>
+    <motion.div 
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="max-w-2xl mx-auto px-6 py-20"
+    >
+      <h1 className="font-anton text-5xl mb-2 uppercase">Let's Connect</h1>
+      <p className="font-sans text-gray-400 mb-8 tracking-wide">
+        For bookings, quotes, or just to say hi.
+      </p>
+
+      <form onSubmit={handleSubmit} className="space-y-6 font-sans">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <input 
+            name="name" 
+            placeholder="NAME" 
+            required 
+            className="w-full bg-transparent border-b border-white/20 py-3 outline-none focus:border-white transition placeholder:text-neutral-600" 
+          />
+          <input 
+            name="email" 
+            type="email" 
+            placeholder="EMAIL" 
+            required 
+            className="w-full bg-transparent border-b border-white/20 py-3 outline-none focus:border-white transition placeholder:text-neutral-600" 
+          />
+        </div>
+        
+        <input 
+          name="phone" 
+          type="tel" 
+          placeholder="PHONE NUMBER" 
+          required 
+          className="w-full bg-transparent border-b border-white/20 py-3 outline-none focus:border-white transition placeholder:text-neutral-600" 
+        />
+        
+        <textarea 
+          name="message" 
+          rows={4} 
+          placeholder="YOUR MESSAGE" 
+          required 
+          className="w-full bg-transparent border-b border-white/20 py-3 outline-none focus:border-white transition placeholder:text-neutral-600 resize-none" 
+        />
+        
+        <button 
+          type="submit"
+          className="bg-white text-black font-anton px-12 py-4 hover:bg-neutral-200 transition-all active:scale-95 uppercase tracking-widest text-sm"
+        >
+          {status === "SENDING..." ? "SENDING..." : "Submit Message"}
+        </button>
+        
+        {status && (
+          <motion.p 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className={`mt-4 text-xs tracking-widest font-bold ${status.includes("ERROR") ? "text-red-500" : "text-gray-400"}`}
+          >
+            {status}
+          </motion.p>
+        )}
       </form>
-    </div>
+    </motion.div>
   );
 }
