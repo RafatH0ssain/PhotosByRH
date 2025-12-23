@@ -4,11 +4,11 @@ import Image from "next/image";
 
 export default function PersonalGallery() {
   const personalImages = [
-    "/Personal Event(s)/Personal (1).jpg",
     "/Personal Event(s)/Personal (2).jpg",
     "/Personal Event(s)/Personal (3).jpg",
     "/Personal Event(s)/Personal (4).jpg",
     "/Personal Event(s)/Personal (5).jpg",
+    "/Personal Event(s)/Personal (1).jpg",
     "/Personal Event(s)/Personal (6).jpg",
     "/Personal Event(s)/Personal (7).JPG",
     "/Personal Event(s)/Personal (8).JPG",
