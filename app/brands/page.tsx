@@ -3,16 +3,16 @@ import { motion } from "framer-motion";
 
 export default function GalleryPage() {
   const images = [
-    "/Brand(s)/Brands (1).jpeg",
-    "/Brand(s)/Brands (2).jpeg",
-    "/Brand(s)/Brands (3).jpeg",
-    "/Brand(s)/Brands (4).jpeg",
-    "/Brand(s)/Brands (5).jpeg",
-    "/Brand(s)/Brands (6).jpeg",
-    "/Brand(s)/Brands (7).jpeg",
-    "/Brand(s)/Brands (8).jpeg",
-    "/Brand(s)/Brands (9).jpeg",
-    "/Brand(s)/Brands (10).jpeg",
+    "/Brand(s)/Brands (1).jpg",
+    "/Brand(s)/Brands (2).jpg",
+    "/Brand(s)/Brands (3).jpg",
+    "/Brand(s)/Brands (4).jpg",
+    "/Brand(s)/Brands (5).jpg",
+    "/Brand(s)/Brands (6).jpg",
+    "/Brand(s)/Brands (7).jpg",
+    "/Brand(s)/Brands (8).jpg",
+    "/Brand(s)/Brands (9).jpg",
+    "/Brand(s)/Brands (10).jpg",
   ];
 
   return (
