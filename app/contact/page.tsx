@@ -2,6 +2,10 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 
+export const metadata = {
+  title: "Contact",
+};
+
 export default function Contact() {
   const [status, setStatus] = useState("");
 
