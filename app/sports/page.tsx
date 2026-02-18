@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 
-export default function PetsGallery() {
+export default function SportsFallery() {
   // Make sure to create a folder named "Sports" in your public directory
   const images = [
     "/Sports/Sports (1).jpg", "/Sports/Sports (2).jpg", "/Sports/Sports (3).jpg",
@@ -27,7 +27,7 @@ export default function PetsGallery() {
           >
             <Image 
               src={src}
-              alt={`Pet Portrait ${i + 1}`}
+              alt={`Sports Photo ${i + 1}`}
               fill
               className="object-cover transition-transform duration-700 md:group-hover:scale-105"
               sizes="(max-width: 768px) 100vw, 33vw"
