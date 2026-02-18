@@ -11,7 +11,7 @@ interface LightboxProps {
 }
 
 export default function Lightbox({ index, images, onClose, setIndex }: LightboxProps) {
-  // Handle Keyboard Navigation (Arrow Keys + Escape)
+  // Handle Keyboard Navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -31,13 +31,13 @@ export default function Lightbox({ index, images, onClose, setIndex }: LightboxP
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        onClick={onClose} // Clicking background closes it
+        onClick={onClose}
         className="fixed inset-0 z-[200] bg-black/95 backdrop-blur-xl flex items-center justify-center p-4"
       >
         {/* Close Button */}
-        <button className="absolute top-6 right-6 text-white text-4xl font-light hover:text-gray-300 z-[210]">&times;</button>
+        <button className="absolute top-4 right-4 md:top-6 md:right-6 text-white text-4xl font-light hover:text-gray-300 z-[210]">&times;</button>
 
-        {/* Previous Button (Hidden on tiny screens, tap edges instead) */}
+        {/* Previous Button (Desktop) */}
         <button 
           onClick={(e) => { e.stopPropagation(); showPrev(); }}
           className="hidden md:block absolute left-4 text-white text-5xl font-thin hover:text-gray-400 p-4 z-[210]"
@@ -45,27 +45,29 @@ export default function Lightbox({ index, images, onClose, setIndex }: LightboxP
           &#8249;
         </button>
 
-        {/* Main Image */}
+        {/* Main Image Container */}
         <motion.div
-          key={index} // Triggers animation when index changes
-          initial={{ opacity: 0, scale: 0.9 }}
+          key={index}
+          initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.9 }}
+          exit={{ opacity: 0, scale: 0.95 }}
           transition={{ type: "spring", damping: 25, stiffness: 300 }}
-          className="relative w-full max-w-5xl aspect-[3/4] md:aspect-[3/2]"
-          onClick={(e) => e.stopPropagation()} // Clicking image DOES NOT close it
+          // FIXED: Removed 'aspect' classes. Now it takes max width/height of the screen.
+          className="relative w-full h-full max-w-7xl max-h-[85vh] flex items-center justify-center"
+          onClick={(e) => e.stopPropagation()} 
         >
           <Image
             src={images[index]}
             alt="Expanded view"
             fill
-            className="object-contain"
+            className="object-contain" // This ensures the image is never cropped/squished
+            sizes="100vw"
             quality={100}
             priority
           />
         </motion.div>
 
-        {/* Next Button */}
+        {/* Next Button (Desktop) */}
         <button 
           onClick={(e) => { e.stopPropagation(); showNext(); }}
           className="hidden md:block absolute right-4 text-white text-5xl font-thin hover:text-gray-400 p-4 z-[210]"
@@ -73,8 +75,8 @@ export default function Lightbox({ index, images, onClose, setIndex }: LightboxP
           &#8250;
         </button>
 
-        {/* Mobile Navigation Hint (Bottom) */}
-        <div className="absolute bottom-6 left-0 right-0 text-center text-xs text-gray-500 md:hidden">
+        {/* Mobile Navigation Hint */}
+        <div className="absolute bottom-6 left-0 right-0 text-center text-xs text-gray-500 md:hidden z-[210]">
           Tap edges to navigate • Tap outside to close
         </div>
         
