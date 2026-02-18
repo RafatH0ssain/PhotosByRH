@@ -9,10 +9,13 @@ export default function Navbar() {
   const pathname = usePathname();
   const isActive = (path: string) => pathname === path;
 
-  const navLinks = [
+const navLinks = [
+    { name: "About", href: "/about" },
     { name: "Brands", href: "/brands" },
-    { name: "Personal", href: "/personal" },
     { name: "Corporate", href: "/corporate" },
+    { name: "Personal", href: "/personal" },
+    { name: "Sports", href: "/sports" },
+    { name: "Pets", href: "/pets" },
     { name: "Contact", href: "/contact" },
   ];
 
