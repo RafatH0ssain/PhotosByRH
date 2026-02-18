@@ -1,36 +1,34 @@
 @import "tailwindcss";
 
-/* v4 uses @theme for variables, but we will use standard CSS for global overrides */
 @theme {
   --color-background: #000000;
   --color-foreground: #ffffff;
 }
 
-/* Hard-lock the background to black and text to white */
 @layer base {
   :root {
     color-scheme: dark !important;
   }
 
-  html, 
-  body {
-    @apply bg-black text-white;
+  html {
     background-color: #000000 !important;
     color: #ffffff !important;
+    overflow-y: scroll; 
+    touch-action: manipulation; 
+  }
+
+  body {
+    @apply bg-black text-white;
     margin: 0;
     padding: 0;
     overflow-x: hidden;
-    /* This prevents the white 'rubber-band' effect on iOS when scrolling */
-    overscroll-behavior: none; 
   }
 
-  /* Force every section to be black */
   main, section, div, header, footer {
     @apply bg-black text-white;
   }
 }
 
-/* Fix for browser Autofill turning inputs white/yellow */
 @layer utilities {
   input:-webkit-autofill,
   input:-webkit-autofill:hover, 
