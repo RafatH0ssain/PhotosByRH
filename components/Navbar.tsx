@@ -11,11 +11,12 @@ export default function Navbar() {
 
 const navLinks = [
     { name: "About", href: "/about" },
+    { name: "Wildlife", href: "/wildlife" },
+    { name: "Sports", href: "/sports" },
+    { name: "Pets", href: "/pets" },
     { name: "Brands", href: "/brands" },
     { name: "Corporate", href: "/corporate" },
     { name: "Personal", href: "/personal" },
-    { name: "Sports", href: "/sports" },
-    { name: "Pets", href: "/pets" },
     { name: "Contact", href: "/contact" },
   ];
 
