@@ -22,7 +22,6 @@ const navLinks = [
 
   return (
     <nav className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-      {/* Logo - Always visible and on top */}
       <Link 
         href="/" 
         className="font-anton text-2xl tracking-tighter text-white z-[100]"

@@ -19,7 +19,7 @@ export default function About() {
             src="/About/Me.jpg" 
             alt="Portrait of the Photographer"
             fill
-            className="object-cover grayscale hover:grayscale-0 transition-all duration-700"
+            className="object-cover hover:scale-110 transition-all duration-700"
             priority
           />
         </motion.div>
