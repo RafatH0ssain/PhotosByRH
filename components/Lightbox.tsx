@@ -25,35 +25,30 @@ export default function Lightbox({ index, images, onClose, setIndex }: LightboxP
   const showPrev = () => setIndex((index - 1 + images.length) % images.length);
 
   return (
-    <div className="fixed inset-0 z-[9999] bg-black/98 flex items-center justify-center">
+    <div className="fixed inset-0 z-[9999] bg-black/98">
       
       {/* 1. Background Click Zone to Close */}
-      <div className="absolute inset-0 cursor-pointer" onClick={onClose} />
+      <div className="absolute inset-0 z-[10000] cursor-pointer" onClick={onClose} />
 
-      {/* 2. Image Container */}
-      <div className="absolute inset-0 p-0 md:p-8 pointer-events-none flex items-center justify-center">
-        <motion.img
-          key={index}
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.2 }}
-          src={images[index]}
-          alt="Expanded view"
-          className="pointer-events-auto drop-shadow-2xl"
-          // THE MAGIC FIX: This forces the image to perfectly fit the screen without cropping
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "contain"
-          }}
-          onClick={(e) => e.stopPropagation()} 
-        />
-      </div>
+      {/* 2. THE IMAGE: Absolutely positioned directly to the screen edges. 
+          No flex containers. No wrappers. Just the image locked to the viewport.
+          The p-4 and md:p-12 give it breathing room so it doesn't touch the very edge.
+      */}
+      <motion.img
+        key={index}
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.2 }}
+        src={images[index]}
+        alt="Expanded view"
+        // Force the image to act as a background cover layer natively
+        className="absolute inset-0 w-full h-full object-contain p-0 pb-12 md:p-12 z-[10001] pointer-events-none drop-shadow-2xl"
+      />
 
       {/* 3. Close Button */}
       <button 
         onClick={onClose}
-        className="absolute top-4 right-4 md:top-6 md:right-6 text-white text-5xl font-light hover:text-gray-300 z-[10000] p-2"
+        className="absolute top-4 right-4 md:top-6 md:right-6 text-white text-5xl font-light hover:text-gray-300 z-[10005] p-2"
       >
         &times;
       </button>
@@ -61,23 +56,31 @@ export default function Lightbox({ index, images, onClose, setIndex }: LightboxP
       {/* 4. Desktop Navigation */}
       <button 
         onClick={(e) => { e.stopPropagation(); showPrev(); }}
-        className="hidden md:block absolute left-4 text-white text-6xl font-thin hover:text-gray-400 p-8 z-[10000]"
+        className="hidden md:block absolute left-4 top-1/2 -translate-y-1/2 text-white text-6xl font-thin hover:text-gray-400 p-8 z-[10005]"
       >
         &#8249;
       </button>
       <button 
         onClick={(e) => { e.stopPropagation(); showNext(); }}
-        className="hidden md:block absolute right-4 text-white text-6xl font-thin hover:text-gray-400 p-8 z-[10000]"
+        className="hidden md:block absolute right-4 top-1/2 -translate-y-1/2 text-white text-6xl font-thin hover:text-gray-400 p-8 z-[10005]"
       >
         &#8250;
       </button>
 
       {/* 5. Mobile Navigation Hint & Tap Zones */}
-      <div className="absolute bottom-6 left-0 right-0 text-center text-xs text-gray-500 md:hidden z-[10000] pointer-events-none">
+      <div className="absolute bottom-6 left-0 right-0 text-center text-xs text-gray-500 md:hidden z-[10005] pointer-events-none">
         Tap edges to navigate
       </div>
-      <div className="absolute inset-y-0 left-0 w-1/3 z-[10000] md:hidden cursor-pointer" onClick={(e) => { e.stopPropagation(); showPrev(); }} />
-      <div className="absolute inset-y-0 right-0 w-1/3 z-[10000] md:hidden cursor-pointer" onClick={(e) => { e.stopPropagation(); showNext(); }} />
+      
+      {/* Massive invisible buttons on the left/right for mobile tapping */}
+      <div 
+        className="absolute inset-y-0 left-0 w-1/3 z-[10005] md:hidden cursor-pointer" 
+        onClick={(e) => { e.stopPropagation(); showPrev(); }} 
+      />
+      <div 
+        className="absolute inset-y-0 right-0 w-1/3 z-[10005] md:hidden cursor-pointer" 
+        onClick={(e) => { e.stopPropagation(); showNext(); }} 
+      />
 
     </div>
   );
