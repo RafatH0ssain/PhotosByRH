@@ -1,6 +1,5 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
 import { useEffect } from "react";
 
 interface LightboxProps {
@@ -32,10 +31,12 @@ export default function Lightbox({ index, images, onClose, setIndex }: LightboxP
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={onClose}
-        className="fixed inset-0 z-[200] bg-black/95 backdrop-blur-xl flex items-center justify-center p-4"
+        className="fixed inset-0 z-[200] bg-black/95 backdrop-blur-xl flex items-center justify-center p-2 md:p-8"
       >
         {/* Close Button */}
-        <button className="absolute top-4 right-4 md:top-6 md:right-6 text-white text-4xl font-light hover:text-gray-300 z-[210]">&times;</button>
+        <button className="absolute top-4 right-4 md:top-6 md:right-6 text-white text-4xl font-light hover:text-gray-300 z-[210]">
+          &times;
+        </button>
 
         {/* Previous Button (Desktop) */}
         <button 
@@ -52,18 +53,17 @@ export default function Lightbox({ index, images, onClose, setIndex }: LightboxP
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
           transition={{ type: "spring", damping: 25, stiffness: 300 }}
-          // FIXED: Removed 'aspect' classes. Now it takes max width/height of the screen.
-          className="relative w-full h-full max-w-7xl max-h-[85vh] flex items-center justify-center"
+          className="relative flex items-center justify-center w-full h-full max-h-[85vh] md:max-h-[90vh]"
           onClick={(e) => e.stopPropagation()} 
         >
-          <Image
+          {/* FIX: Using a standard img tag with w-auto h-auto.
+            This guarantees the image will NEVER crop, stretch, or squash,
+            regardless of if it is horizontal or vertical on a phone.
+          */}
+          <img
             src={images[index]}
             alt="Expanded view"
-            fill
-            className="object-contain" // This ensures the image is never cropped/squished
-            sizes="100vw"
-            quality={100}
-            priority
+            className="w-auto h-auto max-w-full max-h-full object-contain drop-shadow-2xl"
           />
         </motion.div>
 
