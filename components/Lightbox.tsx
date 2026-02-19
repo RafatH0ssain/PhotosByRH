@@ -72,16 +72,6 @@ export default function Lightbox({ index, images, onClose, setIndex }: LightboxP
         &times;
       </button>
 
-      {/* Invisible Mobile Tap Zones (Left 33% and Right 33% of screen) */}
-      <div 
-        style={{ position: "absolute", top: 0, bottom: 0, left: 0, width: "33%", zIndex: 5, cursor: "pointer" }} 
-        onClick={(e) => { e.stopPropagation(); showPrev(); }} 
-      />
-      <div 
-        style={{ position: "absolute", top: 0, bottom: 0, right: 0, width: "33%", zIndex: 5, cursor: "pointer" }} 
-        onClick={(e) => { e.stopPropagation(); showNext(); }} 
-      />
-
       {/* Desktop Navigation Arrows */}
       <button 
         className="hidden md:block" 
