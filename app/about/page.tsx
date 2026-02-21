@@ -14,9 +14,9 @@ export default function About() {
           transition={{ duration: 0.8 }}
           className="relative aspect-[3/4] w-full md:max-w-md bg-neutral-900 overflow-hidden rounded-sm"
         >
-          {/* Ensure you have a photo named 'Me.jpg' in a folder named 'About' inside public */}
+          {/* Ensure you have a photo named 'Me.webp' in a folder named 'About' inside public */}
           <Image 
-            src="/About/Me.jpg" 
+            src="/About/Me.webp" 
             alt="Portrait of the Photographer"
             fill
             className="object-cover hover:scale-110 transition-all duration-700"
