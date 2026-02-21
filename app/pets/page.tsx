@@ -6,8 +6,8 @@ import Lightbox from "@/components/Lightbox";
 
 export default function PetsGallery() {
   const images = [
-    "/Pets/Pets (1).jpg", "/Pets/Pets (2).jpg", "/Pets/Pets (3).jpg",
-    "/Pets/Pets (4).jpg", "/Pets/Pets (5).jpg", "/Pets/Pets (6).jpg",
+    "/Pets/Pets (1).webp", "/Pets/Pets (2).webp", "/Pets/Pets (3).webp",
+    "/Pets/Pets (4).webp", "/Pets/Pets (5).webp", "/Pets/Pets (6).webp",
   ];
 
   // State to track which image is open (null = closed)

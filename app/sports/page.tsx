@@ -6,8 +6,8 @@ import Lightbox from "@/components/Lightbox";
 
 export default function SportsGallery() {
   const images = [
-    "/Sports/Sports (1).jpg", "/Sports/Sports (2).jpg", "/Sports/Sports (3).jpg",
-    "/Sports/Sports (4).jpg", "/Sports/Sports (5).jpg", "/Sports/Sports (6).jpg",
+    "/Sports/Sports (1).webp", "/Sports/Sports (2).webp", "/Sports/Sports (3).webp",
+    "/Sports/Sports (4).webp", "/Sports/Sports (5).webp", "/Sports/Sports (6).webp",
   ];
 
   const [index, setIndex] = useState<number | null>(null);

@@ -6,14 +6,14 @@ import Lightbox from "@/components/Lightbox";
 
 export default function CorporateGallery() {
   const corporateImages = [
-    "/Corporate Event(s)/Corporate (1).jpg",
-    "/Corporate Event(s)/Corporate (2).jpg",
-    "/Corporate Event(s)/Corporate (3).jpg",
-    "/Corporate Event(s)/Corporate (4).jpg",
-    "/Corporate Event(s)/Corporate (5).jpg",
-    "/Corporate Event(s)/Corporate (6).jpg",
-    "/Corporate Event(s)/Corporate (7).jpg",
-    "/Corporate Event(s)/Corporate (8).jpg",
+    "/Corporate Event(s)/Corporate (1).webp",
+    "/Corporate Event(s)/Corporate (2).webp",
+    "/Corporate Event(s)/Corporate (3).webp",
+    "/Corporate Event(s)/Corporate (4).webp",
+    "/Corporate Event(s)/Corporate (5).webp",
+    "/Corporate Event(s)/Corporate (6).webp",
+    "/Corporate Event(s)/Corporate (7).webp",
+    "/Corporate Event(s)/Corporate (8).webp",
   ];
 
   const [index, setIndex] = useState<number | null>(null);

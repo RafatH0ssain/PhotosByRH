@@ -6,17 +6,17 @@ import Lightbox from "@/components/Lightbox";
 
 export default function GalleryPage() {
   const images = [
-    "/Brand(s)/Brands (1).jpeg",
-    "/Brand(s)/Brands (1).jpg",
-    "/Brand(s)/Brands (2).JPG",
-    "/Brand(s)/Brands (3).JPG",
-    "/Brand(s)/Brands (4).JPG",
-    "/Brand(s)/Brands (5).JPG",
-    "/Brand(s)/Brands (6).jpg",
-    "/Brand(s)/Brands (7).jpg",
-    "/Brand(s)/Brands (8).jpg",
-    "/Brand(s)/Brands (9).jpg",
-    "/Brand(s)/Brands (10).jpg",
+    "/Brand(s)/Brands (1).webp",
+    "/Brand(s)/Brands (1).webp",
+    "/Brand(s)/Brands (2).webp",
+    "/Brand(s)/Brands (3).webp",
+    "/Brand(s)/Brands (4).webp",
+    "/Brand(s)/Brands (5).webp",
+    "/Brand(s)/Brands (6).webp",
+    "/Brand(s)/Brands (7).webp",
+    "/Brand(s)/Brands (8).webp",
+    "/Brand(s)/Brands (9).webp",
+    "/Brand(s)/Brands (10).webp",
   ];
 
   const [index, setIndex] = useState<number | null>(null);
