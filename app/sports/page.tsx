@@ -8,6 +8,7 @@ export default function SportsGallery() {
   const images = [
     "/Sports/Sports (1).webp", "/Sports/Sports (2).webp", "/Sports/Sports (3).webp",
     "/Sports/Sports (4).webp", "/Sports/Sports (5).webp", "/Sports/Sports (6).webp",
+    "/Sports/Sports (7).webp", "/Sports/Sports (8).webp", "/Sports/Sports (9).webp",
   ];
 
   const [index, setIndex] = useState<number | null>(null);
