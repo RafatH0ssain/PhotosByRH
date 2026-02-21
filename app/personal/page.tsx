@@ -6,14 +6,14 @@ import Lightbox from "@/components/Lightbox";
 
 export default function PersonalGallery() {
   const personalImages = [
-    "/Personal Event(s)/Personal (2).jpg",
-    "/Personal Event(s)/Personal (3).jpg",
-    "/Personal Event(s)/Personal (4).jpg",
-    "/Personal Event(s)/Personal (5).jpg",
-    "/Personal Event(s)/Personal (1).jpg",
-    "/Personal Event(s)/Personal (6).jpg",
-    "/Personal Event(s)/Personal (7).JPG",
-    "/Personal Event(s)/Personal (8).JPG",
+    "/Personal Event(s)/Personal (2).webp",
+    "/Personal Event(s)/Personal (3).webp",
+    "/Personal Event(s)/Personal (4).webp",
+    "/Personal Event(s)/Personal (5).webp",
+    "/Personal Event(s)/Personal (1).webp",
+    "/Personal Event(s)/Personal (6).webp",
+    "/Personal Event(s)/Personal (7).webp",
+    "/Personal Event(s)/Personal (8).webp",
   ];
 
   const [index, setIndex] = useState<number | null>(null);

@@ -6,15 +6,15 @@ import Lightbox from "@/components/Lightbox";
 
 export default function WildlifeGallery() {
   const images = [
-    "/Wildlife/Wildlife (1).jpg", 
-    "/Wildlife/Wildlife (2).jpg", 
-    "/Wildlife/Wildlife (3).jpg",
-    "/Wildlife/Wildlife (4).jpg", 
-    "/Wildlife/Wildlife (5).jpg", 
-    "/Wildlife/Wildlife (6).jpg",
-    "/Wildlife/Wildlife (7).jpg", 
-    "/Wildlife/Wildlife (8).jpg", 
-    "/Wildlife/Wildlife (9).jpg",
+    "/Wildlife/Wildlife (1).webp", 
+    "/Wildlife/Wildlife (2).webp", 
+    "/Wildlife/Wildlife (3).webp",
+    "/Wildlife/Wildlife (4).webp", 
+    "/Wildlife/Wildlife (5).webp", 
+    "/Wildlife/Wildlife (6).webp",
+    "/Wildlife/Wildlife (7).webp", 
+    "/Wildlife/Wildlife (8).webp", 
+    "/Wildlife/Wildlife (9).webp",
   ];
 
   const [index, setIndex] = useState<number | null>(null);
