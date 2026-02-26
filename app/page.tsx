@@ -1,14 +1,26 @@
 "use client";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import Lightbox from "@/components/Lightbox";
 
 export default function Home() {
+  // Updated to .webp and cleaned up the duplicate Home (1)
   const images = [
-    "/Landing/Home (1).jpeg", "/Landing/Home (1).jpg", "/Landing/Home (2).JPG",
-    "/Landing/Home (3).JPG", "/Landing/Home (4).JPG", "/Landing/Home (5).jpg",
-    "/Landing/Home (6).jpg", "/Landing/Home (7).jpg", "/Landing/Home (8).jpg",
+    "/Landing/Home (1).webp", 
+    "/Landing/Home (2).webp",
+    "/Landing/Home (3).webp", 
+    "/Landing/Home (4).webp", 
+    "/Landing/Home (5).webp",
+    "/Landing/Home (6).webp", 
+    "/Landing/Home (7).webp", 
+    "/Landing/Home (8).webp",
+    "/Landing/Home (9).webp",
   ];
+
+  // Added state for the Lightbox
+  const [index, setIndex] = useState<number | null>(null);
 
   return (
     <div className="max-w-7xl mx-auto px-6 pb-20">
@@ -53,7 +65,8 @@ export default function Home() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.05, duration: 0.6 }}
-            className="aspect-[4/5] bg-neutral-900 overflow-hidden relative group rounded-sm"
+            className="aspect-[4/5] bg-neutral-900 overflow-hidden relative group rounded-sm cursor-pointer"
+            onClick={() => setIndex(i)} // Added onClick to open Lightbox
           >
             <Image 
               src={src}
@@ -66,6 +79,16 @@ export default function Home() {
           </motion.div>
         ))}
       </div>
+
+      {/* Render Lightbox */}
+      {index !== null && (
+        <Lightbox 
+          index={index} 
+          images={images} 
+          onClose={() => setIndex(null)} 
+          setIndex={setIndex} 
+        />
+      )}
     </div>
   );
 }
