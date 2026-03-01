@@ -17,6 +17,12 @@ export default function Home() {
     "/Landing/Home (7).webp", 
     "/Landing/Home (8).webp",
     "/Landing/Home (9).webp",
+    "/Landing/Home (10).webp",
+    "/Landing/Home (11).webp",
+    "/Landing/Home (12).webp",
+    "/Landing/Home (13).webp",
+    "/Landing/Home (14).webp",
+    "/Landing/Home (15).webp",
   ];
 
   // Added state for the Lightbox
