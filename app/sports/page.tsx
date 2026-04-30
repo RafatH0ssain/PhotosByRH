@@ -15,7 +15,7 @@ export default function SportsGallery() {
 
   return (
     <div className="max-w-7xl mx-auto px-6 pb-20">
-      <h1 className="font-anton text-5xl md:text-7xl mb-10 uppercase tracking-tighter">
+      <h1 className="font-anton text-5xl md:text-7xl mb-10 uppercase tracking-tighter bg-transparent">
         Sports Portraits
       </h1>
       <p className="font-sans text-gray-400 mb-8 tracking-wide">
