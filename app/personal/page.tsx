@@ -23,6 +23,9 @@ export default function PersonalGallery() {
       <h1 className="font-anton text-5xl md:text-7xl mb-10 uppercase tracking-tighter">
         Personal Projects
       </h1>
+      <p className="font-sans text-gray-400 mb-8 tracking-wide">
+        Documenting life's important milestones, from graduations to candid portraits. Let's create authentic, natural photos that capture your unique story and preserve "the moment" exactly as it happens.
+      </p>
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
         {personalImages.map((src, i) => (

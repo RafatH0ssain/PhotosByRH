@@ -17,6 +17,7 @@ const navLinks = [
     { name: "Brands", href: "/brands" },
     { name: "Corporate", href: "/corporate" },
     { name: "Personal", href: "/personal" },
+    { name: "Film", href: "/film" },
     { name: "Contact", href: "/contact" },
   ];
 

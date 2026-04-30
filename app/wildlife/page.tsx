@@ -24,6 +24,9 @@ export default function WildlifeGallery() {
       <h1 className="font-anton text-5xl md:text-7xl mb-10 uppercase tracking-tighter">
         Wildlife Photography
       </h1>
+      <p className="font-sans text-gray-400 mb-8 tracking-wide">
+        Capturing the raw beauty and unpredictability of nature. From quiet details to fast-moving action, I love bringing the wilderness into sharp focus. My personal favourite haha.
+      </p>
       
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
         {images.map((src, i) => (

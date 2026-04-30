@@ -18,6 +18,9 @@ export default function PetsGallery() {
       <h1 className="font-anton text-5xl md:text-7xl mb-10 uppercase tracking-tighter">
         Pet Portraits
       </h1>
+      <p className="font-sans text-gray-400 mb-8 tracking-wide">
+        Pets are family. I focus on capturing the unique personalities, playful energy, and quirky moments of your furry companions in a natural, stress-free environment.
+      </p>
       
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
         {images.map((src, i) => (
