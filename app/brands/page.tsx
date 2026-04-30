@@ -24,6 +24,9 @@ export default function GalleryPage() {
       <h1 className="font-anton text-5xl md:text-7xl mb-10 uppercase tracking-tighter">
         Brand Portfolio
       </h1>
+      <p className="font-sans text-gray-400 mb-8 tracking-wide">
+        Helping businesses tell their visual story. I create clean, compelling images that showcase your products, services, and unique identity to connect with your audience.
+      </p>
 
       {/* FIXED: grid-cols-2 for mobile, grid-cols-3 for desktop */}
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">

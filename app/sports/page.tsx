@@ -18,6 +18,9 @@ export default function SportsGallery() {
       <h1 className="font-anton text-5xl md:text-7xl mb-10 uppercase tracking-tighter">
         Sports Portraits
       </h1>
+      <p className="font-sans text-gray-400 mb-8 tracking-wide">
+        Freezing high-energy action and split-second moments. I focus on the intensity, teamwork, and raw emotion of the game to tell the story of every play.
+      </p>
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
         {images.map((src, i) => (

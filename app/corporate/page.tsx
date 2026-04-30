@@ -23,6 +23,9 @@ export default function CorporateGallery() {
       <h1 className="font-anton text-5xl md:text-7xl mb-10 uppercase tracking-tighter">
         Corporate Events
       </h1>
+      <p className="font-sans text-gray-400 mb-8 tracking-wide">
+        Professional photography for events, headshots, and company culture. I deliver polished, high-quality images that reflect the true professionalism and dynamic energy of your team.
+      </p>
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
         {corporateImages.map((src, i) => (
