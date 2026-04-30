@@ -15,6 +15,12 @@ export default function WildlifeGallery() {
     "/Wildlife/Wildlife (7).webp", 
     "/Wildlife/Wildlife (8).webp", 
     "/Wildlife/Wildlife (9).webp",
+    "/Wildlife/Wildlife (10).webp",
+    "/Wildlife/Wildlife (11).webp",
+    "/Wildlife/Wildlife (12).webp",
+    "/Wildlife/Wildlife (13).webp",
+    "/Wildlife/Wildlife (14).webp",
+    "/Wildlife/Wildlife (15).webp",
   ];
 
   const [index, setIndex] = useState<number | null>(null);
