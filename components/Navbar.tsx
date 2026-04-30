@@ -14,10 +14,10 @@ const navLinks = [
     { name: "Wildlife", href: "/wildlife" },
     { name: "Sports", href: "/sports" },
     { name: "Pets", href: "/pets" },
+    { name: "Film", href: "/film" },
     { name: "Brands", href: "/brands" },
     { name: "Corporate", href: "/corporate" },
     { name: "Personal", href: "/personal" },
-    { name: "Film", href: "/film" },
     { name: "Contact", href: "/contact" },
   ];
 
