@@ -14,6 +14,7 @@ export default function CorporateGallery() {
     "/Corporate Event(s)/Corporate (6).webp",
     "/Corporate Event(s)/Corporate (7).webp",
     "/Corporate Event(s)/Corporate (8).webp",
+    "/Corporate Event(s)/Corporate (9).webp",
   ];
 
   const [index, setIndex] = useState<number | null>(null);
