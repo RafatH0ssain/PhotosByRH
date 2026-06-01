@@ -15,6 +15,9 @@ export default function PersonalGallery() {
     "/Personal Event(s)/Personal (7).webp",
     "/Personal Event(s)/Personal (8).webp",
     "/Personal Event(s)/Personal (9).webp",
+    "/Personal Event(s)/Personal (10).webp",
+    "/Personal Event(s)/Personal (11).webp",
+    "/Personal Event(s)/Personal (12).webp",
   ];
 
   const [index, setIndex] = useState<number | null>(null);
