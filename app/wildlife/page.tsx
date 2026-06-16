@@ -58,10 +58,10 @@ export default function WildlifeGallery() {
         {images.map((src, i) => (
           <motion.div
             key={i}
-            initial={{ clipPath: "inset(100% 0 0 0)" }}
-            whileInView={{ clipPath: "inset(0% 0 0 0)" }}
-            viewport={{ once: true, margin: "200px" }}
-            transition={{ duration: 0.72, delay: (i % 3) * 0.07, ease: [0.76, 0, 0.24, 1] }}
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: (i % 3) * 0.06, ease: [0.22, 1, 0.36, 1] }}
             className="gallery-card aspect-[4/5] bg-neutral-950 overflow-hidden relative group cursor-pointer"
             onClick={() => setIndex(i)}
           >

@@ -18,11 +18,6 @@
     touch-action:     manipulation;     /* MOBILE CRITICAL — prevents iOS gesture bugs */
   }
 
-  /* Custom cursor — only on fine-pointer (mouse) devices */
-  @media (pointer: fine) {
-    html, * { cursor: none !important; }
-  }
-
   body {
     margin:           0;
     padding:          0;
