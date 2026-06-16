@@ -4,63 +4,86 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Lightbox from "@/components/Lightbox";
 
-export default function PersonalGallery() {
-  const personalImages = [
-    "/Personal Event(s)/Personal (2).webp",
-    "/Personal Event(s)/Personal (3).webp",
-    "/Personal Event(s)/Personal (4).webp",
-    "/Personal Event(s)/Personal (5).webp",
-    "/Personal Event(s)/Personal (1).webp",
-    "/Personal Event(s)/Personal (6).webp",
-    "/Personal Event(s)/Personal (7).webp",
-    "/Personal Event(s)/Personal (8).webp",
-    "/Personal Event(s)/Personal (9).webp",
-    "/Personal Event(s)/Personal (10).webp",
-    "/Personal Event(s)/Personal (11).webp",
-    "/Personal Event(s)/Personal (12).webp",
-  ];
+const images = [
+  "/Personal Event(s)/Personal (2).webp", "/Personal Event(s)/Personal (3).webp",
+  "/Personal Event(s)/Personal (4).webp", "/Personal Event(s)/Personal (5).webp",
+  "/Personal Event(s)/Personal (1).webp", "/Personal Event(s)/Personal (6).webp",
+  "/Personal Event(s)/Personal (7).webp", "/Personal Event(s)/Personal (8).webp",
+  "/Personal Event(s)/Personal (9).webp", "/Personal Event(s)/Personal (10).webp",
+  "/Personal Event(s)/Personal (11).webp","/Personal Event(s)/Personal (12).webp",
+];
 
+export default function PersonalGallery() {
   const [index, setIndex] = useState<number | null>(null);
 
   return (
-    <div className="max-w-7xl mx-auto px-6 pb-20">
-      <h1 className="font-anton text-5xl md:text-7xl mb-10 uppercase tracking-tighter">
-        Personal Projects
-      </h1>
-      <p className="font-sans text-gray-400 mb-8 tracking-wide">
-        Documenting life's important milestones, from graduations to candid portraits. Let's create authentic, natural photos that capture your unique story and preserve "the moment" exactly as it happens.
-      </p>
+    <div className="max-w-7xl mx-auto px-6 pb-24">
 
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-        {personalImages.map((src, i) => (
+      {/* Ghost number */}
+      <div className="relative select-none pointer-events-none" aria-hidden>
+        <span
+          className="absolute -top-4 -left-2 font-anton text-[clamp(6rem,22vw,18rem)] leading-none tracking-tighter uppercase text-white"
+          style={{ opacity: 0.03 }}
+        >
+          07
+        </span>
+      </div>
+
+      {/* Header */}
+      <div className="relative z-10 pt-8 mb-10">
+        <div className="overflow-hidden mb-3">
+          <motion.h1
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            transition={{ duration: 0.78, ease: [0.76, 0, 0.24, 1] }}
+            className="font-anton text-[clamp(2.5rem,7vw,6rem)] uppercase leading-none tracking-tighter"
+          >
+            Personal
+          </motion.h1>
+        </div>
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.35, duration: 0.6 }}
+          className="text-[13px] text-white/35 max-w-lg leading-relaxed font-light"
+        >
+          Documenting life&apos;s important milestones — from graduations to candid portraits.
+          Authentic, natural photos that preserve the moment exactly as it happens.
+        </motion.p>
+      </div>
+
+      {/* Grid */}
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-[2px] md:gap-[3px]">
+        {images.map((src, i) => (
           <motion.div
             key={i}
-            initial={{ opacity: 0, scale: 0.98 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.05, duration: 0.6 }}
-            className="aspect-[4/5] bg-neutral-900 overflow-hidden relative group rounded-sm cursor-pointer"
+            initial={{ clipPath: "inset(100% 0 0 0)" }}
+            whileInView={{ clipPath: "inset(0% 0 0 0)" }}
+            viewport={{ once: true, margin: "200px" }}
+            transition={{ duration: 0.72, delay: (i % 3) * 0.07, ease: [0.76, 0, 0.24, 1] }}
+            className="gallery-card aspect-[4/5] bg-neutral-950 overflow-hidden relative group cursor-pointer"
             onClick={() => setIndex(i)}
           >
             <Image
               src={src}
               alt={`Personal ${i + 1}`}
               fill
-              className="object-cover transition-transform duration-700 md:group-hover:scale-105"
+              className="object-cover transition-transform duration-700 md:group-hover:scale-[1.05]"
               sizes="(max-width: 768px) 50vw, 33vw"
-              priority={i < 4}
+              priority={i < 3}
             />
+            <div className="absolute top-3 left-3 z-10 pointer-events-none">
+              <span className="text-[9px] text-white/25 tracking-[0.15em]">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+            </div>
+            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors duration-500" />
           </motion.div>
         ))}
       </div>
 
       {index !== null && (
-        <Lightbox 
-          index={index} 
-          images={personalImages} 
-          onClose={() => setIndex(null)} 
-          setIndex={setIndex} 
-        />
+        <Lightbox index={index} images={images} onClose={() => setIndex(null)} setIndex={setIndex} />
       )}
     </div>
   );
