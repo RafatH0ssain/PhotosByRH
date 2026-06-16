@@ -95,6 +95,11 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   reactCompiler: true,
 
+  images: {
+    formats: ["image/avif", "image/webp"],
+    minimumCacheTTL: 31536000,
+  },
+
   async headers() {
     return [
       {
