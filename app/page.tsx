@@ -5,100 +5,155 @@ import Image from "next/image";
 import Link from "next/link";
 import Lightbox from "@/components/Lightbox";
 
-export default function Home() {
-  // Updated to .webp and cleaned up the duplicate Home (1)
-  const images = [
-    "/Landing/Home (1).webp", 
-    "/Landing/Home (2).webp",
-    "/Landing/Home (3).webp", 
-    "/Landing/Home (4).webp", 
-    "/Landing/Home (5).webp",
-    "/Landing/Home (6).webp", 
-    "/Landing/Home (7).webp", 
-    "/Landing/Home (8).webp",
-    "/Landing/Home (9).webp",
-    "/Landing/Home (10).webp",
-    "/Landing/Home (11).webp",
-    "/Landing/Home (12).webp",
-    "/Landing/Home (13).webp",
-    "/Landing/Home (14).webp",
-    "/Landing/Home (15).webp",
-    "/Landing/Home (16).webp",
-    "/Landing/Home (17).webp",
-    "/Landing/Home (18).webp",
-    "/Landing/Home (19).webp",
-    "/Landing/Home (20).webp",
-    "/Landing/Home (21).webp",
-  ];
+const images = [
+  "/Landing/Home (1).webp",  "/Landing/Home (2).webp",  "/Landing/Home (3).webp",
+  "/Landing/Home (4).webp",  "/Landing/Home (5).webp",  "/Landing/Home (6).webp",
+  "/Landing/Home (7).webp",  "/Landing/Home (8).webp",  "/Landing/Home (9).webp",
+  "/Landing/Home (10).webp", "/Landing/Home (11).webp", "/Landing/Home (12).webp",
+  "/Landing/Home (13).webp", "/Landing/Home (14).webp", "/Landing/Home (15).webp",
+  "/Landing/Home (16).webp", "/Landing/Home (17).webp", "/Landing/Home (18).webp",
+  "/Landing/Home (19).webp", "/Landing/Home (20).webp", "/Landing/Home (21).webp",
+];
 
-  // Added state for the Lightbox
-  const [index, setIndex] = useState<number | null>(null);
+/* 12-column asymmetric grid — [col-span class, aspect-ratio class] */
+const GRID: [string, string][] = [
+  ["col-span-12 md:col-span-7", "aspect-[3/4]"],   // 0  — large hero portrait
+  ["col-span-12 md:col-span-5", "aspect-[3/4]"],   // 1  — paired portrait
+  ["col-span-6  md:col-span-4", "aspect-[4/3]"],   // 2  — landscape
+  ["col-span-6  md:col-span-4", "aspect-[4/3]"],   // 3  — landscape
+  ["col-span-12 md:col-span-4", "aspect-[4/3]"],   // 4  — landscape
+  ["col-span-12 md:col-span-5", "aspect-[4/5]"],   // 5  — portrait
+  ["col-span-12 md:col-span-7", "aspect-[4/5]"],   // 6  — wide portrait
+  ["col-span-6  md:col-span-3", "aspect-square"],   // 7  — square
+  ["col-span-6  md:col-span-5", "aspect-square"],   // 8  — wide square
+  ["col-span-12 md:col-span-4", "aspect-[4/5]"],   // 9  — portrait
+  ["col-span-12 md:col-span-8", "aspect-video"],   // 10 — cinematic
+  ["col-span-12 md:col-span-4", "aspect-[4/5]"],   // 11 — portrait
+  ["col-span-6  md:col-span-4", "aspect-[4/5]"],   // 12 — portrait
+  ["col-span-6  md:col-span-4", "aspect-[4/5]"],   // 13 — portrait
+  ["col-span-12 md:col-span-4", "aspect-[4/3]"],   // 14 — landscape
+  ["col-span-12 md:col-span-6", "aspect-video"],   // 15 — widescreen
+  ["col-span-12 md:col-span-6", "aspect-video"],   // 16 — widescreen
+  ["col-span-6  md:col-span-5", "aspect-[4/5]"],   // 17 — portrait
+  ["col-span-6  md:col-span-7", "aspect-[4/5]"],   // 18 — wide portrait
+  ["col-span-12 md:col-span-6", "aspect-[4/5]"],   // 19 — portrait
+  ["col-span-12 md:col-span-6", "aspect-[4/5]"],   // 20 — portrait
+];
+
+const ticker = Array(6)
+  .fill("WILDLIFE · SPORTS · BRANDS · PETS · FILM · CORPORATE · PERSONAL · ")
+  .join("");
+
+export default function Home() {
+  const [lbIndex, setLbIndex] = useState<number | null>(null);
 
   return (
-    <div className="max-w-7xl mx-auto px-6 pb-20">
-      <section className="py-10 md:py-24 border-b border-white/5 mb-12 md:mb-16">
-        <motion.h1 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="font-anton text-5xl sm:text-7xl md:text-9xl mb-8 md:mb-10 uppercase leading-[0.9] tracking-tighter"
-        >
-          Capturing <br /> Moments.
-        </motion.h1>
+    <div className="max-w-7xl mx-auto px-6 pb-24">
 
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="max-w-2xl"
-        >
-          <p className="text-base md:text-xl text-gray-300 leading-relaxed font-light italic mb-6">
-            Hi! I’m a photographer who loves chasing good light and honest moments. 
-            I’m drawn to the small details — expressions, textures, colors, and the 
-            way a single photo can hold an entire story.
-          </p>
-          <p className="text-sm md:text-base text-gray-400 leading-relaxed mb-8">
-            I like keeping things simple... Photography is my way of slowing down.
-          </p>
-          <Link 
-            href="/contact" 
-            className="w-full md:w-auto text-center inline-block border border-white px-8 py-4 font-anton hover:bg-white hover:text-black transition-all duration-300 uppercase tracking-widest text-sm"
+      {/* ── HERO ─────────────────────────────────────────────────────────── */}
+      <section className="pt-10 md:pt-16 pb-14 border-b border-white/[0.06]">
+
+        {/* CAPTURING — text reveal wipe */}
+        <div className="overflow-hidden">
+          <motion.h1
+            initial={{ y: "105%" }}
+            animate={{ y: 0 }}
+            transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
+            className="font-anton text-[clamp(3.8rem,14.5vw,13rem)] leading-[0.85] tracking-tighter uppercase"
           >
-            Reach out for quotes
-          </Link>
-        </motion.div>
-      </section>
-      
-      {/* RESPONSIVE GRID: 1 col on mobile, 2 on tablet, 3 on desktop */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-        {images.map((src, i) => (
-          <motion.div 
-            key={src + i}
-            initial={{ opacity: 0, scale: 0.98 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.05, duration: 0.6 }}
-            className="aspect-[4/5] bg-neutral-900 overflow-hidden relative group rounded-sm cursor-pointer"
-            onClick={() => setIndex(i)} // Added onClick to open Lightbox
+            CAPTURING
+          </motion.h1>
+        </div>
+
+        {/* MOMENTS. + right-side bio — staggered row */}
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mt-1">
+          <div className="overflow-hidden">
+            <motion.h2
+              initial={{ y: "105%" }}
+              animate={{ y: 0 }}
+              transition={{ duration: 0.9, delay: 0.09, ease: [0.76, 0, 0.24, 1] }}
+              className="font-anton text-[clamp(3rem,10.5vw,9.5rem)] leading-[0.85] tracking-tighter uppercase text-white/[0.18]"
+            >
+              MOMENTS.
+            </motion.h2>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.55, duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+            className="md:max-w-[280px] shrink-0"
           >
-            <Image 
-              src={src}
-              alt={`Featured Work ${i + 1}`}
-              fill
-              className="object-cover transition-transform duration-700 md:group-hover:scale-105"
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              priority={i < 2}
-            />
+            <p className="text-[13px] text-white/35 font-light leading-relaxed mb-5">
+              Hi! I&apos;m a photographer who loves chasing good light and honest moments.
+              Drawn to the small details — expressions, textures, and the way a single
+              photo can hold an entire story.
+            </p>
+            <Link
+              href="/contact"
+              className="group inline-flex items-center gap-3 border border-white/20 px-6 py-3 font-anton text-xs tracking-[0.2em] uppercase hover:border-[#585a5a] hover:text-[#585a5a] transition-colors duration-300"
+            >
+              REACH OUT
+              <span className="translate-x-0 group-hover:translate-x-1 transition-transform duration-300">
+                →
+              </span>
+            </Link>
           </motion.div>
-        ))}
+        </div>
+      </section>
+
+      {/* ── MARQUEE TICKER ───────────────────────────────────────────────── */}
+      <div className="overflow-hidden border-b border-white/[0.06] py-3 my-8">
+        <div
+          className="flex whitespace-nowrap will-change-transform"
+          style={{ animation: "marquee 35s linear infinite" }}
+        >
+          <span className="text-[9px] tracking-[0.32em] uppercase text-white/[0.18]">{ticker}</span>
+          <span className="text-[9px] tracking-[0.32em] uppercase text-white/[0.18]" aria-hidden>{ticker}</span>
+        </div>
       </div>
 
-      {/* Render Lightbox */}
-      {index !== null && (
-        <Lightbox 
-          index={index} 
-          images={images} 
-          onClose={() => setIndex(null)} 
-          setIndex={setIndex} 
+      {/* ── ASYMMETRIC 12-COLUMN GRID ─────────────────────────────────────── */}
+      <div className="grid grid-cols-12 gap-[2px] md:gap-[3px]">
+        {images.map((src, i) => {
+          const [colClass, aspectClass] = GRID[i];
+          return (
+            <motion.div
+              key={src}
+              initial={{ clipPath: "inset(100% 0 0 0)" }}
+              whileInView={{ clipPath: "inset(0% 0 0 0)" }}
+              viewport={{ once: true, margin: "200px" }}
+              transition={{ duration: 0.75, delay: (i % 4) * 0.065, ease: [0.76, 0, 0.24, 1] }}
+              className={`gallery-card ${colClass} ${aspectClass} bg-neutral-950 overflow-hidden relative group cursor-pointer`}
+              onClick={() => setLbIndex(i)}
+            >
+              <Image
+                src={src}
+                alt={`Featured work ${i + 1}`}
+                fill
+                className="object-cover transition-transform duration-700 md:group-hover:scale-[1.05]"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 58vw, 42vw"
+                priority={i < 2}
+              />
+              {/* Card index */}
+              <div className="absolute top-3 left-3 z-10 pointer-events-none">
+                <span className="text-[9px] text-white/25 tracking-[0.15em]">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+              </div>
+              {/* Hover vignette */}
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors duration-500" />
+            </motion.div>
+          );
+        })}
+      </div>
+
+      {lbIndex !== null && (
+        <Lightbox
+          index={lbIndex}
+          images={images}
+          onClose={() => setLbIndex(null)}
+          setIndex={setLbIndex}
         />
       )}
     </div>
