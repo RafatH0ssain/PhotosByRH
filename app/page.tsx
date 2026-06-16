@@ -15,29 +15,29 @@ const images = [
   "/Landing/Home (19).webp", "/Landing/Home (20).webp", "/Landing/Home (21).webp",
 ];
 
-/* 12-column asymmetric grid — [col-span class, aspect-ratio class] */
-const GRID: [string, string][] = [
-  ["col-span-12 md:col-span-7", "aspect-[3/4]"],   // 0  — large hero portrait
-  ["col-span-12 md:col-span-5", "aspect-[3/4]"],   // 1  — paired portrait
-  ["col-span-6  md:col-span-4", "aspect-[4/3]"],   // 2  — landscape
-  ["col-span-6  md:col-span-4", "aspect-[4/3]"],   // 3  — landscape
-  ["col-span-12 md:col-span-4", "aspect-[4/3]"],   // 4  — landscape
-  ["col-span-12 md:col-span-5", "aspect-[4/5]"],   // 5  — portrait
-  ["col-span-12 md:col-span-7", "aspect-[4/5]"],   // 6  — wide portrait
-  ["col-span-6  md:col-span-3", "aspect-square"],   // 7  — square
-  ["col-span-6  md:col-span-5", "aspect-square"],   // 8  — wide square
-  ["col-span-12 md:col-span-4", "aspect-[4/5]"],   // 9  — portrait
-  ["col-span-12 md:col-span-8", "aspect-video"],   // 10 — cinematic
-  ["col-span-12 md:col-span-4", "aspect-[4/5]"],   // 11 — portrait
-  ["col-span-6  md:col-span-4", "aspect-[4/5]"],   // 12 — portrait
-  ["col-span-6  md:col-span-4", "aspect-[4/5]"],   // 13 — portrait
-  ["col-span-12 md:col-span-4", "aspect-[4/3]"],   // 14 — landscape
-  ["col-span-12 md:col-span-6", "aspect-video"],   // 15 — widescreen
-  ["col-span-12 md:col-span-6", "aspect-video"],   // 16 — widescreen
-  ["col-span-6  md:col-span-5", "aspect-[4/5]"],   // 17 — portrait
-  ["col-span-6  md:col-span-7", "aspect-[4/5]"],   // 18 — wide portrait
-  ["col-span-12 md:col-span-6", "aspect-[4/5]"],   // 19 — portrait
-  ["col-span-12 md:col-span-6", "aspect-[4/5]"],   // 20 — portrait
+/* 12-column asymmetric grid — [col-span class, aspect-ratio class, sizes hint] */
+const GRID: [string, string, string][] = [
+  ["col-span-12 md:col-span-7", "aspect-[3/4]",  "(max-width: 768px) 100vw, 58vw"],
+  ["col-span-12 md:col-span-5", "aspect-[3/4]",  "(max-width: 768px) 100vw, 42vw"],
+  ["col-span-6  md:col-span-4", "aspect-[4/3]",  "(max-width: 768px) 50vw, 33vw"],
+  ["col-span-6  md:col-span-4", "aspect-[4/3]",  "(max-width: 768px) 50vw, 33vw"],
+  ["col-span-12 md:col-span-4", "aspect-[4/3]",  "(max-width: 768px) 100vw, 33vw"],
+  ["col-span-12 md:col-span-5", "aspect-[4/5]",  "(max-width: 768px) 100vw, 42vw"],
+  ["col-span-12 md:col-span-7", "aspect-[4/5]",  "(max-width: 768px) 100vw, 58vw"],
+  ["col-span-6  md:col-span-3", "aspect-square",  "(max-width: 768px) 50vw, 25vw"],
+  ["col-span-6  md:col-span-5", "aspect-square",  "(max-width: 768px) 50vw, 42vw"],
+  ["col-span-12 md:col-span-4", "aspect-[4/5]",  "(max-width: 768px) 100vw, 33vw"],
+  ["col-span-12 md:col-span-8", "aspect-video",   "(max-width: 768px) 100vw, 66vw"],
+  ["col-span-12 md:col-span-4", "aspect-[4/5]",  "(max-width: 768px) 100vw, 33vw"],
+  ["col-span-6  md:col-span-4", "aspect-[4/5]",  "(max-width: 768px) 50vw, 33vw"],
+  ["col-span-6  md:col-span-4", "aspect-[4/5]",  "(max-width: 768px) 50vw, 33vw"],
+  ["col-span-12 md:col-span-4", "aspect-[4/3]",  "(max-width: 768px) 100vw, 33vw"],
+  ["col-span-12 md:col-span-6", "aspect-video",   "(max-width: 768px) 100vw, 50vw"],
+  ["col-span-12 md:col-span-6", "aspect-video",   "(max-width: 768px) 100vw, 50vw"],
+  ["col-span-6  md:col-span-5", "aspect-[4/5]",  "(max-width: 768px) 50vw, 42vw"],
+  ["col-span-6  md:col-span-7", "aspect-[4/5]",  "(max-width: 768px) 50vw, 58vw"],
+  ["col-span-12 md:col-span-6", "aspect-[4/5]",  "(max-width: 768px) 100vw, 50vw"],
+  ["col-span-12 md:col-span-6", "aspect-[4/5]",  "(max-width: 768px) 100vw, 50vw"],
 ];
 
 const ticker = Array(6)
@@ -116,7 +116,7 @@ export default function Home() {
       {/* ── ASYMMETRIC 12-COLUMN GRID ─────────────────────────────────────── */}
       <div className="grid grid-cols-12 gap-[2px] md:gap-[3px]">
         {images.map((src, i) => {
-          const [colClass, aspectClass] = GRID[i];
+          const [colClass, aspectClass, imgSizes] = GRID[i];
           return (
             <motion.div
               key={src}
@@ -132,7 +132,7 @@ export default function Home() {
                 alt={`Featured work ${i + 1}`}
                 fill
                 className="object-cover transition-transform duration-700 md:group-hover:scale-[1.05]"
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 58vw, 42vw"
+                sizes={imgSizes}
                 priority={i < 2}
               />
               {/* Card index */}
