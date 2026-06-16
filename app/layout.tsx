@@ -1,7 +1,6 @@
 import { Anton, Geist } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-import MagneticCursor from "@/components/MagneticCursor";
 import { Metadata } from "next";
 
 const anton = Anton({ weight: "400", subsets: ["latin"], variable: "--font-anton" });
@@ -20,10 +19,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className="dark" suppressHydrationWarning style={{ colorScheme: "dark", backgroundColor: "black" }}>
       <body className={`${anton.variable} ${geist.variable} font-sans bg-black text-white`} suppressHydrationWarning>
 
-        <MagneticCursor />
-
         <header className="fixed top-0 w-full z-50">
-          <div className="absolute inset-0 bg-black/80 backdrop-blur-xl border-b border-white/[0.06]" />
+          <div className="absolute inset-0 bg-black/85 backdrop-blur-sm border-b border-white/[0.06]" />
           <Navbar />
         </header>
 
