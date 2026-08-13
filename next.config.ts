@@ -76,6 +76,16 @@ const securityHeaders = [
       "usb=()",
     ].join(", "),
   },
+  // Isolate the browsing context from anything that opens or embeds us.
+  // Cheap on a static site with no auth, no popups and no cross-origin embeds.
+  {
+    key: "Cross-Origin-Opener-Policy",
+    value: "same-origin",
+  },
+  {
+    key: "Cross-Origin-Resource-Policy",
+    value: "same-origin",
+  },
   // HSTS — forces HTTPS for 2 years, including subdomains.
   // The `preload` flag makes the domain eligible for browser preload lists.
   // Only meaningful in production (the site must be served over HTTPS).
