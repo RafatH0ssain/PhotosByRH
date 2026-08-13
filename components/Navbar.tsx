@@ -7,9 +7,9 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 const NAV = [
   { name: "About",     href: "/about",     num: "00" },
   { name: "Wildlife",  href: "/wildlife",  num: "01" },
-  { name: "Sports",    href: "/sports",    num: "02" },
-  { name: "Pets",      href: "/pets",      num: "03" },
-  { name: "Film",      href: "/film",      num: "04" },
+  { name: "Film",      href: "/film",      num: "02" },
+  { name: "Sports",    href: "/sports",    num: "03" },
+  { name: "Pets",      href: "/pets",      num: "04" },
   { name: "Brands",    href: "/brands",    num: "05" },
   { name: "Corporate", href: "/corporate", num: "06" },
   { name: "Personal",  href: "/personal",  num: "07" },

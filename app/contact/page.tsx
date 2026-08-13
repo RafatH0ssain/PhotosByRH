@@ -2,18 +2,13 @@
 import { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 
-/* Shown as a fallback when the form fails. Left empty deliberately — putting a
-   personal address on a public page is your call, not mine. Set it and the
-   error message turns into a mailto: link automatically. */
-const FALLBACK_EMAIL: string = "";
-
 const FORMSPREE_ENDPOINT = "https://formspree.io/f/mjgbljnl";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
 const MESSAGES: Record<Exclude<Status, "idle" | "sending">, string> = {
   sent:  "MESSAGE SENT. I WILL GET BACK TO YOU SHORTLY.",
-  error: "SOMETHING WENT WRONG. PLEASE TRY AGAIN",
+  error: "SOMETHING WENT WRONG. PLEASE TRY AGAIN.",
 };
 
 export default function Contact() {
@@ -112,6 +107,9 @@ export default function Contact() {
                 required
                 maxLength={254}
                 autoComplete="email"
+                // type="email" on its own accepts "a@b" with no TLD
+                pattern="[^@\s]+@[^@\s]+\.[A-Za-z]{2,}"
+                title="Enter a valid email address, for example name@example.com"
                 className="w-full bg-transparent py-3 text-sm outline-none placeholder:text-white/20 tracking-[0.08em]"
               />
             </div>
@@ -159,15 +157,6 @@ export default function Contact() {
                 }`}
               >
                 {MESSAGES[status]}
-                {status === "error" && FALLBACK_EMAIL && (
-                  <>
-                    {" OR EMAIL "}
-                    <a href={`mailto:${FALLBACK_EMAIL}`} className="underline hover:text-red-300">
-                      {FALLBACK_EMAIL.toUpperCase()}
-                    </a>
-                  </>
-                )}
-                {status === "error" && !FALLBACK_EMAIL && "."}
               </motion.p>
             )}
           </div>
