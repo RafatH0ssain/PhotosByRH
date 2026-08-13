@@ -8,10 +8,25 @@ import type { NextConfig } from "next";
 // directly to Formspree (external service) via client-side fetch; there is no
 // server-side mutation surface to protect.
 //
-// script-src 'unsafe-inline': required because Next.js injects inline <script>
-// tags for hydration data (__NEXT_DATA__). A nonce-based approach (more strict)
-// would require a middleware.ts that generates a per-request nonce — implement
-// that if this site ever adds authenticated routes or sensitive data.
+// script-src 'unsafe-inline': required because Next injects inline <script>
+// tags carrying the RSC flight data (7 of the 20 script tags on the home page).
+// The __NEXT_DATA__ reference this comment used to give was the Pages Router
+// mechanism and does not apply here, but the conclusion holds for a different
+// reason:
+//
+// A nonce-based policy was implemented and measured, and it breaks this site.
+// Every route here is statically prerendered at build time, so the HTML cannot
+// carry a per-request nonce — the served markup had zero nonce attributes while
+// the header advertised one. Because 'strict-dynamic' makes browsers ignore
+// 'self', all 20 script tags would be blocked and the site would ship with no
+// JavaScript at all. Making it work means opting every route into dynamic
+// rendering, which costs full static generation and CDN caching.
+//
+// That trade is not worth it while the site renders no user-supplied content
+// and has no auth, cookies or API routes — there is no injection vector for
+// script-src to contain. Revisit if any of those change: add a middleware.ts
+// issuing a per-request nonce AND accept dynamic rendering. Doing only the
+// first half takes the site down.
 //
 // connect-src ws://localhost:*: added only in development for Next.js HMR
 // WebSocket connections. Stripped from production builds automatically.
