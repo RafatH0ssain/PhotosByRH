@@ -1,12 +1,12 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import Image from "next/image";
+import Image, { type StaticImageData } from "next/image";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 
 interface LightboxProps {
   index:    number;
-  images:   string[];
+  images:   StaticImageData[];
   onClose:  () => void;
   setIndex: (i: number) => void;
 }
@@ -33,11 +33,11 @@ const imgVariants = {
 const QUALITY = 85;
 const DEVICE_SIZES = [640, 750, 828, 1080, 1200, 1920, 2048, 3840];
 
-const optimisedUrl = (src: string) => {
+const optimisedUrl = (src: StaticImageData) => {
   const target = window.innerWidth * 0.9 * (window.devicePixelRatio || 1);
   const width =
     DEVICE_SIZES.find((w) => w >= target) ?? DEVICE_SIZES[DEVICE_SIZES.length - 1];
-  return `/_next/image?url=${encodeURIComponent(src)}&w=${width}&q=${QUALITY}`;
+  return `/_next/image?url=${encodeURIComponent(src.src)}&w=${width}&q=${QUALITY}`;
 };
 
 export default function Lightbox({ index, images, onClose, setIndex }: LightboxProps) {
@@ -195,6 +195,7 @@ export default function Lightbox({ index, images, onClose, setIndex }: LightboxP
                 fill
                 sizes="90vw"
                 quality={QUALITY}
+                placeholder="blur"
                 priority
                 className="object-contain"
               />

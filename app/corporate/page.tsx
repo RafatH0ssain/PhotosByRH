@@ -1,12 +1,6 @@
 import Gallery from "@/components/Gallery";
 
-const images = [
-  "/Corporate Event(s)/Corporate (1).webp", "/Corporate Event(s)/Corporate (2).webp",
-  "/Corporate Event(s)/Corporate (3).webp", "/Corporate Event(s)/Corporate (4).webp",
-  "/Corporate Event(s)/Corporate (5).webp", "/Corporate Event(s)/Corporate (6).webp",
-  "/Corporate Event(s)/Corporate (7).webp", "/Corporate Event(s)/Corporate (8).webp",
-  "/Corporate Event(s)/Corporate (9).webp",
-];
+import images from "./images";
 
 export default function CorporateGallery() {
   return (

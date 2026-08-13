@@ -1,10 +1,6 @@
 import Gallery from "@/components/Gallery";
 
-const images = [
-  "/Sports/Sports (1).webp", "/Sports/Sports (2).webp", "/Sports/Sports (3).webp",
-  "/Sports/Sports (4).webp", "/Sports/Sports (5).webp", "/Sports/Sports (6).webp",
-  "/Sports/Sports (7).webp", "/Sports/Sports (8).webp", "/Sports/Sports (9).webp",
-];
+import images from "./images";
 
 export default function SportsGallery() {
   return (
