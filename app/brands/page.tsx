@@ -1,10 +1,6 @@
 import Gallery from "@/components/Gallery";
 
-const images = [
-  "/Brand(s)/Brands (1).webp", "/Brand(s)/Brands (2).webp", "/Brand(s)/Brands (3).webp",
-  "/Brand(s)/Brands (4).webp", "/Brand(s)/Brands (5).webp", "/Brand(s)/Brands (6).webp",
-  "/Brand(s)/Brands (7).webp", "/Brand(s)/Brands (8).webp", "/Brand(s)/Brands (9).webp",
-];
+import images from "./images";
 
 export default function BrandsGallery() {
   return (

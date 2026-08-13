@@ -5,29 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Lightbox from "@/components/Lightbox";
 
-const images = [
-  "/Wildlife/Wildlife (1).webp",
-  "/Film/Film (8).webp",
-  "/Landing/Home (3).webp",
-  "/Personal Event(s)/Personal (6).webp",
-  "/Landing/Home (5).webp",
-  "/Brand(s)/Brands (8).webp",
-  "/Corporate Event(s)/Corporate (3).webp",
-  "/Pets/Pets (4).webp",
-  "/Film/Film (9).webp",
-  "/Sports/Sports (1).webp",
-  "/Sports/Sports (3).webp",
-  "/Sports/Sports (6).webp",
-  "/Wildlife/Wildlife (2).webp",
-  "/Landing/Home (14).webp",
-  "/Wildlife/Wildlife (3).webp",
-  "/Film/Film (5).webp",
-  "/Pets/Pets (1).webp",
-  "/Pets/Pets (8).webp",
-  "/Landing/Home (19).webp",
-  "/Film/Film (7).webp",
-  "/Pets/Pets (2).webp",
-];
+import images from "./home-images";
 
 /* 12-column asymmetric grid — [col-span class, aspect-ratio class, sizes hint] */
 const GRID: [string, string, string][] = [
@@ -134,7 +112,7 @@ export default function Home() {
           const [colClass, aspectClass, imgSizes] = GRID[i];
           return (
             <motion.button
-              key={src}
+              key={src.src}
               type="button"
               onClick={() => setLbIndex(i)}
               aria-label={`Open featured work ${i + 1} of ${images.length} in the photo viewer`}
@@ -154,6 +132,7 @@ export default function Home() {
                 fill
                 className="object-cover transition-transform duration-700 md:group-hover:scale-[1.05]"
                 sizes={imgSizes}
+                placeholder="blur"
                 priority={i < 2}
               />
               {/* Card index */}

@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import Image from "next/image";
+import Image, { type StaticImageData } from "next/image";
 import Lightbox from "@/components/Lightbox";
 
 interface GalleryProps {
@@ -9,7 +9,7 @@ interface GalleryProps {
   number:    string;
   title:     string;
   blurb:     string;
-  images:    string[];
+  images:    StaticImageData[];
   /** Prefix for each image's alt text, e.g. "Wildlife" -> "Wildlife 3" */
   altPrefix: string;
 }
@@ -63,7 +63,7 @@ export default function Gallery({ number, title, blurb, images, altPrefix }: Gal
       <div className="grid grid-cols-2 md:grid-cols-3 gap-[2px] md:gap-[3px]">
         {images.map((src, i) => (
           <motion.button
-            key={src}
+            key={src.src}
             type="button"
             onClick={() => setIndex(i)}
             aria-label={`Open ${altPrefix} ${i + 1} of ${images.length} in the photo viewer`}
@@ -83,6 +83,7 @@ export default function Gallery({ number, title, blurb, images, altPrefix }: Gal
               fill
               className="object-cover transition-transform duration-700 md:group-hover:scale-[1.05]"
               sizes="(max-width: 768px) 50vw, 33vw"
+              placeholder="blur"
               priority={i < 3}
             />
             <div className="absolute top-3 left-3 z-10 pointer-events-none">
