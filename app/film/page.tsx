@@ -10,7 +10,7 @@ const images = [
 export default function FilmGallery() {
   return (
     <Gallery
-      number="04"
+      number="02"
       title="Film"
       blurb="Embracing the traditional analog process. I primarily shoot black-and-white film and hand-develop every roll at home — raw, timeless, and tactile."
       images={images}
