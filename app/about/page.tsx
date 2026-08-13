@@ -1,9 +1,11 @@
 "use client";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function About() {
+  const reduceMotion = useReducedMotion();
+
   return (
     <div className="max-w-7xl mx-auto px-6 pb-24 pt-8">
 
@@ -21,9 +23,9 @@ export default function About() {
 
         {/* Portrait */}
         <motion.div
-          initial={{ clipPath: "inset(100% 0 0 0)" }}
-          animate={{ clipPath: "inset(0% 0 0 0)" }}
-          transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
+          initial={reduceMotion ? { opacity: 0 } : { clipPath: "inset(100% 0 0 0)" }}
+          animate={reduceMotion ? { opacity: 1 } : { clipPath: "inset(0% 0 0 0)" }}
+          transition={{ duration: reduceMotion ? 0.2 : 0.9, ease: [0.76, 0, 0.24, 1] }}
           className="relative aspect-[3/4] w-full bg-neutral-950 overflow-hidden"
         >
           <Image
@@ -42,16 +44,16 @@ export default function About() {
 
         {/* Text */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.35, duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ delay: reduceMotion ? 0 : 0.35, duration: reduceMotion ? 0.2 : 0.75, ease: [0.22, 1, 0.36, 1] }}
           className="flex flex-col justify-start md:pt-2"
         >
           <div className="overflow-hidden mb-6">
             <motion.h1
-              initial={{ y: "100%" }}
-              animate={{ y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2, ease: [0.76, 0, 0.24, 1] }}
+              initial={reduceMotion ? { opacity: 0 } : { y: "100%" }}
+              animate={reduceMotion ? { opacity: 1 } : { y: 0 }}
+              transition={{ duration: reduceMotion ? 0.2 : 0.8, delay: reduceMotion ? 0 : 0.2, ease: [0.76, 0, 0.24, 1] }}
               className="font-anton text-[clamp(2.8rem,7vw,6.5rem)] uppercase leading-none tracking-tighter"
             >
               Behind<br />The Lens.

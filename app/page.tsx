@@ -1,18 +1,32 @@
 "use client";
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import Lightbox from "@/components/Lightbox";
 
 const images = [
-  "/Landing/Home (1).webp",  "/Landing/Home (2).webp",  "/Landing/Home (3).webp",
-  "/Landing/Home (4).webp",  "/Landing/Home (5).webp",  "/Landing/Home (6).webp",
-  "/Landing/Home (7).webp",  "/Landing/Home (8).webp",  "/Landing/Home (9).webp",
-  "/Landing/Home (10).webp", "/Landing/Home (11).webp", "/Landing/Home (12).webp",
-  "/Landing/Home (13).webp", "/Landing/Home (14).webp", "/Landing/Home (15).webp",
-  "/Landing/Home (16).webp", "/Landing/Home (17).webp", "/Landing/Home (18).webp",
-  "/Landing/Home (19).webp", "/Landing/Home (20).webp", "/Landing/Home (21).webp",
+  "/Wildlife/Wildlife (1).webp",
+  "/Film/Film (8).webp",
+  "/Landing/Home (3).webp",
+  "/Personal Event(s)/Personal (6).webp",
+  "/Landing/Home (5).webp",
+  "/Brand(s)/Brands (8).webp",
+  "/Corporate Event(s)/Corporate (3).webp",
+  "/Pets/Pets (4).webp",
+  "/Film/Film (9).webp",
+  "/Sports/Sports (1).webp",
+  "/Sports/Sports (3).webp",
+  "/Sports/Sports (6).webp",
+  "/Wildlife/Wildlife (2).webp",
+  "/Landing/Home (14).webp",
+  "/Wildlife/Wildlife (3).webp",
+  "/Film/Film (5).webp",
+  "/Pets/Pets (1).webp",
+  "/Pets/Pets (8).webp",
+  "/Landing/Home (19).webp",
+  "/Film/Film (7).webp",
+  "/Pets/Pets (2).webp",
 ];
 
 /* 12-column asymmetric grid — [col-span class, aspect-ratio class, sizes hint] */
@@ -46,6 +60,7 @@ const ticker = Array(6)
 
 export default function Home() {
   const [lbIndex, setLbIndex] = useState<number | null>(null);
+  const reduceMotion = useReducedMotion();
 
   return (
     <div className="max-w-7xl mx-auto px-6 pb-24">
@@ -56,9 +71,9 @@ export default function Home() {
         {/* CAPTURING — text reveal wipe */}
         <div className="overflow-hidden">
           <motion.h1
-            initial={{ y: "105%" }}
-            animate={{ y: 0 }}
-            transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
+            initial={reduceMotion ? { opacity: 0 } : { y: "105%" }}
+            animate={reduceMotion ? { opacity: 1 } : { y: 0 }}
+            transition={{ duration: reduceMotion ? 0.2 : 0.9, ease: [0.76, 0, 0.24, 1] }}
             className="font-anton text-[clamp(3.8rem,14.5vw,13rem)] leading-[0.85] tracking-tighter uppercase"
           >
             CAPTURING
@@ -69,9 +84,9 @@ export default function Home() {
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mt-1">
           <div className="overflow-hidden">
             <motion.h2
-              initial={{ y: "105%" }}
-              animate={{ y: 0 }}
-              transition={{ duration: 0.9, delay: 0.09, ease: [0.76, 0, 0.24, 1] }}
+              initial={reduceMotion ? { opacity: 0 } : { y: "105%" }}
+              animate={reduceMotion ? { opacity: 1 } : { y: 0 }}
+              transition={{ duration: reduceMotion ? 0.2 : 0.9, delay: reduceMotion ? 0 : 0.09, ease: [0.76, 0, 0.24, 1] }}
               className="font-anton text-[clamp(3rem,10.5vw,9.5rem)] leading-[0.85] tracking-tighter uppercase text-white/[0.18]"
             >
               MOMENTS.
@@ -79,9 +94,9 @@ export default function Home() {
           </div>
 
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
+            initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.55, duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ delay: reduceMotion ? 0 : 0.55, duration: reduceMotion ? 0.2 : 0.65, ease: [0.22, 1, 0.36, 1] }}
             className="md:max-w-[280px] shrink-0"
           >
             <p className="text-[13px] text-white/35 font-light leading-relaxed mb-5">
@@ -105,7 +120,7 @@ export default function Home() {
       {/* ── MARQUEE TICKER ───────────────────────────────────────────────── */}
       <div className="overflow-hidden border-b border-white/[0.06] py-3 my-8">
         <div
-          className="flex whitespace-nowrap will-change-transform"
+          className="flex whitespace-nowrap"
           style={{ animation: "marquee 35s linear infinite" }}
         >
           <span className="text-[9px] tracking-[0.32em] uppercase text-white/[0.18]">{ticker}</span>
@@ -118,14 +133,20 @@ export default function Home() {
         {images.map((src, i) => {
           const [colClass, aspectClass, imgSizes] = GRID[i];
           return (
-            <motion.div
+            <motion.button
               key={src}
-              initial={{ opacity: 0, y: 16 }}
+              type="button"
+              onClick={() => setLbIndex(i)}
+              aria-label={`Open featured work ${i + 1} of ${images.length} in the photo viewer`}
+              initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: (i % 4) * 0.055, ease: [0.22, 1, 0.36, 1] }}
-              className={`gallery-card ${colClass} ${aspectClass} bg-neutral-950 overflow-hidden relative group cursor-pointer`}
-              onClick={() => setLbIndex(i)}
+              transition={{
+                duration: reduceMotion ? 0.2 : 0.5,
+                delay:    reduceMotion ? 0 : (i % 4) * 0.055,
+                ease:     [0.22, 1, 0.36, 1],
+              }}
+              className={`${colClass} ${aspectClass} bg-neutral-950 overflow-hidden relative group cursor-pointer`}
             >
               <Image
                 src={src}
@@ -143,7 +164,7 @@ export default function Home() {
               </div>
               {/* Hover vignette */}
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors duration-500" />
-            </motion.div>
+            </motion.button>
           );
         })}
       </div>
