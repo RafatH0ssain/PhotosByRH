@@ -51,6 +51,7 @@ const EAGER = 4;
 
 export default function Home() {
   const [lbIndex, setLbIndex] = useState<number | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
   const gridRef = useReveal<HTMLDivElement>();
 
   return (
@@ -111,7 +112,10 @@ export default function Home() {
               <button
                 key={src.src}
                 type="button"
-                onClick={() => setLbIndex(i)}
+                onClick={(e) => {
+                  setPreview(e.currentTarget.querySelector("img")?.currentSrc ?? null);
+                  setLbIndex(i);
+                }}
                 aria-label={`Open featured photograph ${i + 1} of ${images.length}`}
                 {...(eager ? {} : { "data-reveal": "" })}
                 style={eager ? undefined : ({ "--reveal-delay": `${(i % 3) * 40}ms` } as CSSProperties)}
@@ -152,6 +156,7 @@ export default function Home() {
         <Lightbox
           index={lbIndex}
           images={images}
+          preview={preview}
           onClose={() => setLbIndex(null)}
           setIndex={setLbIndex}
         />
