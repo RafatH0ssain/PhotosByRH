@@ -124,6 +124,13 @@ const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 31536000,
+
+    // Every `quality` passed to next/image must appear here. Next 16 rejects
+    // any other value with a 400 rather than clamping it, which fails silently
+    // in the UI: the image simply never arrives and the placeholder stays up.
+    // Listed explicitly (rather than left to the [75] default) so that raising
+    // a component's quality is an obvious two-file change, not a broken image.
+    qualities: [75],
   },
 
   async headers() {

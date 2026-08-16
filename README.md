@@ -57,3 +57,14 @@ After adding new photos, run:
 node scripts/optimize-images.mjs --dry-run   # preview
 node scripts/optimize-images.mjs             # resize to 2560px long edge
 ```
+
+Any `quality` passed to `next/image` must also be listed in `images.qualities`
+in `next.config.ts`. Next 16 answers an unlisted quality with a 400 rather than
+clamping it, and the failure is invisible in the UI — the image never arrives
+and the blur placeholder simply stays up. The lightbox previously requested
+quality 85 against the default allow-list of `[75]`, so no full-size photo ever
+loaded.
+
+The lightbox opens from cache: clicking a thumbnail hands its resolved
+`currentSrc` to the viewer, which paints that already-downloaded copy on the
+first frame and swaps in the full-size photo once it decodes.

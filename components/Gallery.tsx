@@ -22,6 +22,7 @@ const EAGER = 6;
  */
 export default function Gallery({ title, blurb, images, altPrefix }: GalleryProps) {
   const [index, setIndex] = useState<number | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
   const gridRef = useReveal<HTMLDivElement>();
 
   return (
@@ -47,7 +48,10 @@ export default function Gallery({ title, blurb, images, altPrefix }: GalleryProp
             <button
               key={src.src}
               type="button"
-              onClick={() => setIndex(i)}
+              onClick={(e) => {
+                setPreview(e.currentTarget.querySelector("img")?.currentSrc ?? null);
+                setIndex(i);
+              }}
               aria-label={`Open ${altPrefix.toLowerCase()} photograph ${i + 1} of ${images.length}`}
               {...(eager ? {} : { "data-reveal": "" })}
               style={eager ? undefined : ({ "--reveal-delay": `${(i % 3) * 40}ms` } as CSSProperties)}
@@ -71,6 +75,7 @@ export default function Gallery({ title, blurb, images, altPrefix }: GalleryProp
         <Lightbox
           index={index}
           images={images}
+          preview={preview}
           onClose={() => setIndex(null)}
           setIndex={setIndex}
         />

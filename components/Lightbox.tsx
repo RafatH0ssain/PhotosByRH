@@ -9,13 +9,24 @@ interface LightboxProps {
   images:   StaticImageData[];
   onClose:  () => void;
   setIndex: (i: number) => void;
+  /** The exact URL the grid already fetched for the photo being opened, read
+      off the thumbnail's `currentSrc`. Painted immediately so the viewer opens
+      from cache instead of waiting on a full-size request. */
+  preview?: string | null;
 }
 
 /* Warm the neighbouring photo into the HTTP cache. The quality must match the
    <Image quality> below and the width must be one of Next's deviceSizes —
    otherwise this requests a different variant to the one actually rendered and
-   we pay for the bytes twice instead of saving a round trip. */
-const QUALITY = 85;
+   we pay for the bytes twice instead of saving a round trip.
+
+   QUALITY must also be a value the optimizer is willing to serve. Next 16 only
+   honours the qualities listed in `images.qualities` (default: [75]) and
+   answers anything else with a flat 400 — so this was 85, every request for a
+   full-size photo failed, and the viewer sat on its blur placeholder forever
+   waiting for bytes that were never coming. Keep this in step with
+   next.config.ts. */
+const QUALITY = 75;
 const DEVICE_SIZES = [640, 750, 828, 1080, 1200, 1920, 2048, 3840];
 
 const optimisedUrl = (src: StaticImageData) => {
@@ -33,7 +44,7 @@ const SAMPLE_WINDOW  = 120;  // ms of pointer history used to measure velocity
 
 interface Sample { t: number; x: number; y: number }
 
-export default function Lightbox({ index, images, onClose, setIndex }: LightboxProps) {
+export default function Lightbox({ index, images, onClose, setIndex, preview }: LightboxProps) {
   const count = images.length;
 
   /* The neighbouring photos are not in the first paint. Mounting all three
@@ -41,6 +52,14 @@ export default function Lightbox({ index, images, onClose, setIndex }: LightboxP
      placeholders, three srcset evaluations — between the click and the photo
      the user actually asked for. They arrive on the next frame instead, long
      before any swipe could need them. */
+  /* The thumbnail stands in until the full-size photo has decoded. It is the
+     same image at a smaller width and it is already in the HTTP cache, so it
+     costs nothing and paints on the first frame. Only for the photo that was
+     actually clicked — after that everything is warm anyway. */
+  const [openIndex] = useState(index);
+  const [fullLoaded, setFullLoaded] = useState(false);
+  const showPreview = Boolean(preview) && index === openIndex && !fullLoaded;
+
   const [neighboursReady, setNeighboursReady] = useState(false);
   useEffect(() => {
     const id = requestAnimationFrame(() => setNeighboursReady(true));
@@ -467,12 +486,31 @@ export default function Lightbox({ index, images, onClose, setIndex }: LightboxP
                 alt={`Photograph ${i + 1} of ${count}`}
                 fill
                 sizes="100vw"
-                quality={QUALITY}
+                quality={QUALITY}   /* see the note on QUALITY above */
                 placeholder="blur"
                 priority={slot === 0}
                 draggable={false}
+                onLoad={slot === 0 ? () => setFullLoaded(true) : undefined}
                 className="select-none object-contain"
               />
+
+              {/* Stacked above the <Image>, because next/image paints its blur
+                  placeholder as the element's own background and would other-
+                  wise cover a sharper stand-in sitting underneath it. */}
+              {slot === 0 && showPreview && (
+                /* Intentionally a raw <img>: `preview` is already a fully
+                   resolved, already-downloaded /_next/image URL. Handing it to
+                   next/image would build a fresh srcset around it and defeat
+                   the entire point, which is to paint from cache. */
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={preview!}
+                  alt=""
+                  aria-hidden
+                  draggable={false}
+                  className="pointer-events-none absolute inset-0 h-full w-full select-none object-contain"
+                />
+              )}
             </div>
           </div>
         ))}
