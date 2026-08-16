@@ -6,10 +6,9 @@ Photography portfolio for Rafat Hossain — wildlife, sports, pets, film, brands
 
 **Live:** [photosbyrh.vercel.app](https://photosbyrh.vercel.app)
 
-Built with Next.js 16, React 19, and Tailwind CSS v4. No animation library —
-motion is CSS transitions plus a small spring/gesture layer in
-`components/spring.ts`, so it runs on the compositor rather than the main
-thread.
+Built with Next.js 16, React 19, Tailwind CSS v4 and Framer Motion. Page and
+grid motion is plain CSS transitions so it runs on the compositor; Framer
+Motion is used by the lightbox.
 
 ## Design
 
@@ -25,10 +24,7 @@ primary action is a white pill with a black label (19.3:1) rather than a hue.
 Every text colour clears WCAG AA against the background it is used on.
 
 Chrome is a translucent material that fades in once content scrolls under it,
-and honours `prefers-reduced-transparency` and `prefers-contrast`. The lightbox
-tracks the pointer 1:1, projects flick momentum to pick its landing photo, and
-hands the release velocity to a spring, so a gesture can be caught and reversed
-mid-flight.
+and honours `prefers-reduced-transparency` and `prefers-contrast`.
 
 Motion is kept off the critical path deliberately. Hero entrances are CSS
 animations so they start at first paint rather than waiting for hydration;
@@ -65,15 +61,5 @@ and the blur placeholder simply stays up. The lightbox previously requested
 quality 85 against the default allow-list of `[75]`, so no full-size photo ever
 loaded.
 
-The lightbox opens from cache: clicking a thumbnail hands its resolved
-`currentSrc` to the viewer, which paints that already-downloaded copy on the
-first frame and cross-fades to the full-size photo once it decodes. Measured
-on a throttled phone, that puts a photograph on screen in ~57ms regardless of
-how cold the full-size variant is.
-
-The viewer also asks for roughly 2x device density rather than 3x (`sizes` is
-`64vw` for an element laid out at ~100vw). Cold, at 1.6Mbps, that is a 48KB
-828px variant instead of a 123KB 1200px one — 0.30s versus 0.76s to transform
-and transfer, for a density difference that is invisible on a photograph. The
-neighbour prefetch is deliberately held until the clicked photo has loaded, so
-it never competes with the one being looked at.
+The lightbox requests a `90vw` variant and prefetches its two neighbours, so
+arrowing or swiping does not stall on a cold fetch.
