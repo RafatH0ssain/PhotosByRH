@@ -31,9 +31,10 @@ import type { NextConfig } from "next";
 // connect-src ws://localhost:*: added only in development for Next.js HMR
 // WebSocket connections. Stripped from production builds automatically.
 //
-// img-src data:: required for the CSS film-grain overlay in globals.css which
-// uses a data-URI SVG as a background-image (Chromium routes CSS data-URIs
-// through img-src).
+// img-src data:: required by next/image's blur placeholders, which are inlined
+// into the markup as base64 data URIs. (This previously existed for the CSS
+// film-grain overlay, which has since been removed — the directive is still
+// needed, but for this reason instead.)
 //
 // upgrade-insecure-requests: only emitted in production so local dev (HTTP)
 // is not broken.

@@ -8,42 +8,32 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-    <div className="max-w-7xl mx-auto px-6 pb-24 pt-8">
+    <div className="mx-auto flex min-h-[70vh] max-w-[1400px] flex-col items-center justify-center px-6 py-24 text-center">
+      <p className="rise text-micro uppercase text-fg-3">Error 404</p>
+      <h1 className="rise mt-4 max-w-[16ch] text-title text-balance">
+        This page doesn&apos;t exist.
+      </h1>
+      <p className="rise mt-5 max-w-[44ch] text-lead text-fg-2 text-balance">
+        It may have moved, or the link may be wrong. The galleries are all still
+        where you left them.
+      </p>
 
-      {/* Ghost numeral, same device the galleries use */}
-      <div className="relative select-none pointer-events-none" aria-hidden>
-        <span
-          className="absolute -top-4 -left-2 font-anton text-[clamp(6rem,22vw,18rem)] leading-none tracking-tighter uppercase text-white"
-          style={{ opacity: 0.03 }}
+      <div className="rise mt-9 flex flex-wrap items-center justify-center gap-4">
+        <Link
+          href="/"
+          className="rounded-pill bg-fg px-7 py-3 text-body font-medium text-canvas transition-[transform,background-color] duration-150 ease-out hover:bg-white active:scale-[0.97]"
         >
-          404
-        </span>
-      </div>
-
-      <div className="relative z-10 pt-8 max-w-xl">
-        <h1 className="font-anton text-[clamp(2.5rem,7vw,6rem)] uppercase leading-none tracking-tighter mb-4">
-          Nothing<br />Here.
-        </h1>
-        <p className="text-[13px] text-white/35 leading-relaxed font-light mb-10">
-          That page does not exist — it may have moved, or the link may be wrong.
-          The galleries are all still where you left them.
-        </p>
-
-        <div className="flex flex-wrap gap-4">
-          <Link
-            href="/"
-            className="group inline-flex items-center gap-3 border border-white/20 px-6 py-3 font-anton text-xs tracking-[0.2em] uppercase hover:border-[#585a5a] hover:text-[#585a5a] transition-colors duration-300"
-          >
-            BACK TO WORK
-            <span className="translate-x-0 group-hover:translate-x-1 transition-transform duration-300">→</span>
-          </Link>
-          <Link
-            href="/contact"
-            className="inline-flex items-center px-6 py-3 font-anton text-xs tracking-[0.2em] uppercase text-white/35 hover:text-white transition-colors duration-300"
-          >
-            GET IN TOUCH
-          </Link>
-        </div>
+          Back to the work
+        </Link>
+        <Link
+          href="/contact"
+          className="group inline-flex items-center gap-1.5 rounded-pill px-3 py-3 text-body font-medium text-fg transition-transform duration-150 ease-out active:scale-[0.97]"
+        >
+          Get in touch
+          <span aria-hidden className="transition-transform duration-300 ease-out group-hover:translate-x-0.5">
+            &rsaquo;
+          </span>
+        </Link>
       </div>
     </div>
   );
