@@ -96,21 +96,44 @@ export default function Lightbox({ index, images, onClose, setIndex }: LightboxP
   }, []);
 
   /* ── Commit a slide ────────────────────────────────────────────────────────
-     The track sits at -100% / 0 / +100%, so once it has travelled a full
-     viewport the incoming photo is already exactly where the current one was.
-     Swapping the index and zeroing the offset inside one synchronous flush
-     means the browser never paints the intermediate state. */
+     Advancing the index shifts every photo one slot, which moves each of them
+     a full viewport to the left (or right). The offset is rebased by the same
+     amount so nothing changes position on screen: commit is a change of
+     coordinates, not a change of appearance.
+
+     Rebasing rather than zeroing matters because commit is not only reached at
+     the end of a completed slide. Zeroing is correct only when the track has
+     travelled exactly one full viewport; anywhere else it teleports the photo.
+
+     The swap and the rebase happen inside one synchronous flush, so the
+     browser never gets a chance to paint the intermediate state. */
   const commit = useCallback((dir: 1 | -1) => {
     const next = (indexRef.current + dir + count) % count;
     indexRef.current = next;
     flushSync(() => setIndex(next));
-    ox.current = 0;
+    ox.current += dir * window.innerWidth;
     render();
   }, [count, setIndex, render]);
 
-  /* Land any in-flight slide immediately. This is what lets a held arrow key
-     advance without queueing: each press finishes the last one and starts the
-     next, instead of waiting for a settle that never comes. */
+  /* Change photo with no motion at all. Used for the arrow keys, which get
+     held down and repeat: an animation there would queue up behind itself and
+     turn a key repeat into a laggy slideshow. Instant is the right answer for
+     a repeated, keyboard-initiated action. */
+  const jump = useCallback((dir: 1 | -1) => {
+    if (count < 2 || closing.current) return;
+    if (anim.current) { anim.current.stop(); anim.current = null; }
+    pending.current = 0;
+
+    const next = (indexRef.current + dir + count) % count;
+    indexRef.current = next;
+    flushSync(() => setIndex(next));
+    ox.current = 0;
+    oy.current = 0;
+    render();
+  }, [count, setIndex, render]);
+
+  /* Land any in-flight slide immediately, preserving its on-screen position,
+     so a new gesture can start from a settled coordinate system. */
   const settle = useCallback(() => {
     if (anim.current) { anim.current.stop(); anim.current = null; }
     if (pending.current !== 0) {
@@ -187,8 +210,8 @@ export default function Lightbox({ index, images, onClose, setIndex }: LightboxP
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape")     { e.preventDefault(); requestClose(); return; }
-      if (e.key === "ArrowRight") { e.preventDefault(); go(1);  return; }
-      if (e.key === "ArrowLeft")  { e.preventDefault(); go(-1); return; }
+      if (e.key === "ArrowRight") { e.preventDefault(); jump(1);  return; }
+      if (e.key === "ArrowLeft")  { e.preventDefault(); jump(-1); return; }
 
       if (e.key === "Tab") {
         const focusables = overlayRef.current?.querySelectorAll<HTMLElement>(
@@ -211,7 +234,7 @@ export default function Lightbox({ index, images, onClose, setIndex }: LightboxP
 
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [go, requestClose]);
+  }, [jump, requestClose]);
 
   /* Warm the neighbours so arrowing / swiping does not stall on a cold fetch */
   useEffect(() => {
@@ -232,10 +255,14 @@ export default function Lightbox({ index, images, onClose, setIndex }: LightboxP
   const onPointerDown = (e: React.PointerEvent) => {
     if (drag.current.active || closing.current) return;
 
-    // Interrupt whatever is moving and keep its exact on-screen position. The
-    // animation is not cancelled back to a logical value — the user grabs the
-    // photo where they can see it, which is the whole point of a spring.
-    settle();
+    /* Interrupt whatever is moving and keep its exact on-screen position. The
+       pending commit is abandoned rather than applied: the photo the user just
+       grabbed stays the current one, the offset stays where it is, and the
+       three mounted slots stay centred on it, so a reversal has somewhere to
+       go in both directions. Committing here instead would jump the photo out
+       from under the finger that just caught it. */
+    if (anim.current) { anim.current.stop(); anim.current = null; }
+    pending.current = 0;
 
     (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
 
@@ -316,16 +343,24 @@ export default function Lightbox({ index, images, onClose, setIndex }: LightboxP
       }
 
       if (dismiss) {
+        closing.current = true;
+
+        /* The photo keeps travelling at the speed the finger left it, while
+           the overlay fades underneath it. Fading the whole overlay rather
+           than leaning on the scrim opacity in render() matters: that only
+           reaches 35% before the photo is off screen, so the viewer would
+           blink out while still visibly on top of the page. */
+        const overlay = overlayRef.current;
+        if (overlay) {
+          overlay.style.transition = "opacity 260ms cubic-bezier(0.23, 1, 0.32, 1)";
+          overlay.style.opacity    = "0";
+        }
+
         anim.current = animateSpring({
-          from: oy.current, to: h, velocity: vy, response: 0.35, damping: 1,
-          onUpdate: (v) => {
-            oy.current = v;
-            render();
-            // Nothing is left on screen past this point; waiting for the
-            // spring to formally settle would just delay the dismissal.
-            if (v >= h * 0.8) { anim.current?.stop(); anim.current = null; onClose(); }
-          },
+          from: oy.current, to: h, velocity: vy, response: 0.4, damping: 1,
+          onUpdate: (v) => { oy.current = v; render(); },
         });
+        window.setTimeout(onClose, 260);
       } else {
         anim.current = animateSpring({
           from: oy.current, to: 0, velocity: vy, response: 0.35, damping: 0.85,
