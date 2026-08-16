@@ -2,7 +2,7 @@
 
 Photography portfolio for Rafat Hossain — wildlife, sports, pets, film, brands, and event work.
 
-![The About page of PhotosByRH, showing a black-and-white self-portrait beside the "Behind The Lens." introduction](public/About/GitHub_Img.jpeg)
+![The About page of PhotosByRH — the heading "Behind the lens." above a black-and-white portrait of Rafat photographing down a city street, beside the introduction text and a "Let's work together" button](public/About/GitHub_Img.png)
 
 **Live:** [photosbyrh.vercel.app](https://photosbyrh.vercel.app)
 
