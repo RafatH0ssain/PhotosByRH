@@ -67,4 +67,13 @@ loaded.
 
 The lightbox opens from cache: clicking a thumbnail hands its resolved
 `currentSrc` to the viewer, which paints that already-downloaded copy on the
-first frame and swaps in the full-size photo once it decodes.
+first frame and cross-fades to the full-size photo once it decodes. Measured
+on a throttled phone, that puts a photograph on screen in ~57ms regardless of
+how cold the full-size variant is.
+
+The viewer also asks for roughly 2x device density rather than 3x (`sizes` is
+`64vw` for an element laid out at ~100vw). Cold, at 1.6Mbps, that is a 48KB
+828px variant instead of a 123KB 1200px one — 0.30s versus 0.76s to transform
+and transfer, for a density difference that is invisible on a photograph. The
+neighbour prefetch is deliberately held until the clicked photo has loaded, so
+it never competes with the one being looked at.
