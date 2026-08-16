@@ -75,7 +75,7 @@ export default function Navbar() {
           without dragging the logo and links through the transition. */}
       <div
         aria-hidden
-        className={`material absolute inset-0 border-b bg-canvas/72 backdrop-blur-xl backdrop-saturate-150 transition-[opacity,border-color] duration-300 ease-out ${
+        className={`material absolute inset-0 border-b bg-canvas/72 backdrop-blur-xl transition-[opacity,border-color] duration-300 ease-out ${
           scrolled || open
             ? "border-hairline opacity-100"
             : "border-transparent opacity-0"
@@ -152,7 +152,7 @@ export default function Navbar() {
       <div
         id="mobile-nav"
         inert={!open}
-        className={`material fixed inset-0 -z-10 overflow-y-auto bg-canvas/85 backdrop-blur-2xl backdrop-saturate-150 transition-[opacity,transform,visibility] duration-400 ease-sheet lg:hidden ${
+        className={`material fixed inset-0 -z-10 overflow-y-auto bg-canvas/85 backdrop-blur-xl transition-[opacity,transform,visibility] duration-400 ease-sheet lg:hidden ${
           open
             ? "visible translate-y-0 opacity-100"
             : "invisible -translate-y-3 opacity-0"

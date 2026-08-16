@@ -47,7 +47,7 @@ const GRID: [string, string, string][] = [
 /* The first row paints straight from the HTML. Anything revealed on scroll is
    invisible until the observer runs, so keeping the LCP candidate out of that
    set means the largest image is not waiting on hydration. */
-const EAGER = 2;
+const EAGER = 4;
 
 export default function Home() {
   const [lbIndex, setLbIndex] = useState<number | null>(null);
@@ -79,13 +79,13 @@ export default function Home() {
         >
           <Link
             href="/contact"
-            className="rounded-pill bg-accent-solid px-7 py-3 text-body font-medium text-white transition-[transform,filter] duration-150 ease-out hover:brightness-110 active:scale-[0.97]"
+            className="rounded-pill bg-fg px-7 py-3 text-body font-medium text-canvas transition-[transform,background-color] duration-150 ease-out hover:bg-white active:scale-[0.97]"
           >
             Get in touch
           </Link>
           <Link
             href="/about"
-            className="group inline-flex items-center gap-1.5 rounded-pill px-3 py-3 text-body font-medium text-accent transition-transform duration-150 ease-out active:scale-[0.97]"
+            className="group inline-flex items-center gap-1.5 rounded-pill px-3 py-3 text-body font-medium text-fg transition-transform duration-150 ease-out active:scale-[0.97]"
           >
             About me
             <span
@@ -114,7 +114,7 @@ export default function Home() {
                 onClick={() => setLbIndex(i)}
                 aria-label={`Open featured photograph ${i + 1} of ${images.length}`}
                 {...(eager ? {} : { "data-reveal": "" })}
-                style={eager ? undefined : ({ "--reveal-delay": `${(i % 3) * 70}ms` } as CSSProperties)}
+                style={eager ? undefined : ({ "--reveal-delay": `${(i % 3) * 40}ms` } as CSSProperties)}
                 className={`${colClass} ${aspectClass} group relative overflow-hidden rounded-card bg-elevated transition-transform duration-200 ease-out active:scale-[0.985]`}
               >
                 <Image
@@ -142,7 +142,7 @@ export default function Home() {
         </p>
         <Link
           href="/contact"
-          className="mt-9 inline-block rounded-pill bg-accent-solid px-7 py-3 text-body font-medium text-white transition-[transform,filter] duration-150 ease-out hover:brightness-110 active:scale-[0.97]"
+          className="mt-9 inline-block rounded-pill bg-fg px-7 py-3 text-body font-medium text-canvas transition-[transform,background-color] duration-150 ease-out hover:bg-white active:scale-[0.97]"
         >
           Start a conversation
         </Link>

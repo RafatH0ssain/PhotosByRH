@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal, flushSync } from "react-dom";
 import Image, { type StaticImageData } from "next/image";
 import { animateSpring, project, rubberband, type SpringHandle } from "@/components/spring";
@@ -35,6 +35,17 @@ interface Sample { t: number; x: number; y: number }
 
 export default function Lightbox({ index, images, onClose, setIndex }: LightboxProps) {
   const count = images.length;
+
+  /* The neighbouring photos are not in the first paint. Mounting all three
+     slides up front meant a click put three <Image> components — three blur
+     placeholders, three srcset evaluations — between the click and the photo
+     the user actually asked for. They arrive on the next frame instead, long
+     before any swipe could need them. */
+  const [neighboursReady, setNeighboursReady] = useState(false);
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setNeighboursReady(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
 
   const overlayRef = useRef<HTMLDivElement>(null);
   const scrimRef   = useRef<HTMLDivElement>(null);
@@ -407,7 +418,7 @@ export default function Lightbox({ index, images, onClose, setIndex }: LightboxP
 
   // The three mounted slots. Keys are the slot, not the photo, so React swaps
   // the src on a stable node instead of reordering the DOM on every slide.
-  const slots: [number, number][] = count < 2
+  const slots: [number, number][] = count < 2 || !neighboursReady
     ? [[0, index]]
     : [
         [-1, (index - 1 + count) % count],
@@ -427,7 +438,7 @@ export default function Lightbox({ index, images, onClose, setIndex }: LightboxP
         ref={scrimRef}
         aria-hidden
         className="absolute inset-0 bg-black"
-        style={{ animation: "lb-scrim 240ms cubic-bezier(0.23, 1, 0.32, 1) both" }}
+        style={{ animation: "lb-scrim 110ms linear both" }}
       />
 
       {/* .drag-surface asks for `pinch-zoom`: the browser keeps two-finger zoom
@@ -447,14 +458,10 @@ export default function Lightbox({ index, images, onClose, setIndex }: LightboxP
             className="absolute top-0 h-full w-full p-4 md:p-10"
             style={{ left: `${slot * 100}%` }}
           >
-            <div
-              className="relative h-full w-full"
-              style={
-                slot === 0
-                  ? { animation: "lb-photo 320ms cubic-bezier(0.23, 1, 0.32, 1) both" }
-                  : undefined
-              }
-            >
+            {/* No entrance animation on the photograph. It is the content the
+                click asked for, and fading it in over 320ms was read — fairly —
+                as the viewer being slow to open. */}
+            <div className="relative h-full w-full">
               <Image
                 src={images[i]}
                 alt={`Photograph ${i + 1} of ${count}`}

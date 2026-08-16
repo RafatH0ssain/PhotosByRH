@@ -19,11 +19,23 @@ opens up. Anton is kept for the wordmark only. Tokens live in the `@theme` block
 of `app/globals.css`, which is the single source of truth; there is no
 `tailwind.config.ts`.
 
+The palette is monochrome. On a page that is almost entirely photographs, a
+saturated UI colour competes with the only thing meant to carry colour, so the
+primary action is a white pill with a black label (19.3:1) rather than a hue.
+Every text colour clears WCAG AA against the background it is used on.
+
 Chrome is a translucent material that fades in once content scrolls under it,
 and honours `prefers-reduced-transparency` and `prefers-contrast`. The lightbox
 tracks the pointer 1:1, projects flick momentum to pick its landing photo, and
 hands the release velocity to a spring, so a gesture can be caught and reversed
 mid-flight.
+
+Motion is kept off the critical path deliberately. Hero entrances are CSS
+animations so they start at first paint rather than waiting for hydration;
+above-the-fold images are never hidden behind a scroll reveal, so the LCP
+element paints straight from the HTML; and the lightbox mounts only the photo
+that was clicked on its first frame, with its neighbours following once that
+photo is on screen.
 
 ## Development
 

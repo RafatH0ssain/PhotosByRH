@@ -13,7 +13,7 @@ interface GalleryProps {
 }
 
 /* First row paints from the HTML so the LCP image never waits on hydration */
-const EAGER = 3;
+const EAGER = 6;
 
 /**
  * Shared gallery page. Previously this markup was copy-pasted across seven
@@ -50,7 +50,7 @@ export default function Gallery({ title, blurb, images, altPrefix }: GalleryProp
               onClick={() => setIndex(i)}
               aria-label={`Open ${altPrefix.toLowerCase()} photograph ${i + 1} of ${images.length}`}
               {...(eager ? {} : { "data-reveal": "" })}
-              style={eager ? undefined : ({ "--reveal-delay": `${(i % 3) * 70}ms` } as CSSProperties)}
+              style={eager ? undefined : ({ "--reveal-delay": `${(i % 3) * 40}ms` } as CSSProperties)}
               className="group relative aspect-[4/5] overflow-hidden rounded-card bg-elevated transition-transform duration-200 ease-out active:scale-[0.985]"
             >
               <Image

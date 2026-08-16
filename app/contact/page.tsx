@@ -13,7 +13,7 @@ const MESSAGES: Record<Exclude<Status, "idle" | "sending">, string> = {
 const FIELD =
   "w-full rounded-card border border-hairline bg-elevated px-4 py-3.5 text-body " +
   "text-fg outline-none transition-[border-color,background-color] duration-200 " +
-  "ease-out placeholder:text-fg-4 focus:border-accent focus:bg-raised";
+  "ease-out placeholder:text-fg-4 focus:border-fg-3 focus:bg-raised";
 
 export default function Contact() {
   const [status, setStatus] = useState<Status>("idle");
@@ -136,7 +136,7 @@ export default function Contact() {
           <button
             type="submit"
             disabled={sending}
-            className="rounded-pill bg-accent-solid px-7 py-3 text-body font-medium text-white transition-[transform,filter,opacity] duration-150 ease-out hover:brightness-110 active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50"
+            className="rounded-pill bg-fg px-7 py-3 text-body font-medium text-canvas transition-[transform,background-color,opacity] duration-150 ease-out hover:bg-white active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50"
           >
             {sending ? "Sending…" : "Send message"}
           </button>
