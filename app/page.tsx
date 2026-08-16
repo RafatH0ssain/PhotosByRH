@@ -79,7 +79,7 @@ export default function Home() {
         >
           <Link
             href="/contact"
-            className="rounded-pill bg-accent px-7 py-3 text-body font-medium text-white transition-[transform,filter] duration-150 ease-out hover:brightness-110 active:scale-[0.97]"
+            className="rounded-pill bg-accent-solid px-7 py-3 text-body font-medium text-white transition-[transform,filter] duration-150 ease-out hover:brightness-110 active:scale-[0.97]"
           >
             Get in touch
           </Link>
@@ -142,7 +142,7 @@ export default function Home() {
         </p>
         <Link
           href="/contact"
-          className="mt-9 inline-block rounded-pill bg-accent px-7 py-3 text-body font-medium text-white transition-[transform,filter] duration-150 ease-out hover:brightness-110 active:scale-[0.97]"
+          className="mt-9 inline-block rounded-pill bg-accent-solid px-7 py-3 text-body font-medium text-white transition-[transform,filter] duration-150 ease-out hover:brightness-110 active:scale-[0.97]"
         >
           Start a conversation
         </Link>

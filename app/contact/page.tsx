@@ -136,7 +136,7 @@ export default function Contact() {
           <button
             type="submit"
             disabled={sending}
-            className="rounded-pill bg-accent px-7 py-3 text-body font-medium text-white transition-[transform,filter,opacity] duration-150 ease-out hover:brightness-110 active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50"
+            className="rounded-pill bg-accent-solid px-7 py-3 text-body font-medium text-white transition-[transform,filter,opacity] duration-150 ease-out hover:brightness-110 active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50"
           >
             {sending ? "Sending…" : "Send message"}
           </button>

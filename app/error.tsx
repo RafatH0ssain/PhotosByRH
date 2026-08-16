@@ -17,7 +17,7 @@ export default function Error({
 
   return (
     <div className="mx-auto flex min-h-[70vh] max-w-[1400px] flex-col items-center justify-center px-6 py-24 text-center">
-      <p className="rise text-micro uppercase text-fg-4">Something went wrong</p>
+      <p className="rise text-micro uppercase text-fg-3">Something went wrong</p>
       <h1 className="rise mt-4 max-w-[16ch] text-title text-balance">
         This page failed to load.
       </h1>
@@ -30,7 +30,7 @@ export default function Error({
         <button
           type="button"
           onClick={reset}
-          className="rounded-pill bg-accent px-7 py-3 text-body font-medium text-white transition-[transform,filter] duration-150 ease-out hover:brightness-110 active:scale-[0.97]"
+          className="rounded-pill bg-accent-solid px-7 py-3 text-body font-medium text-white transition-[transform,filter] duration-150 ease-out hover:brightness-110 active:scale-[0.97]"
         >
           Try again
         </button>
@@ -46,7 +46,7 @@ export default function Error({
       </div>
 
       {error.digest && (
-        <p className="mt-12 text-caption text-fg-4 tabular-nums">Ref {error.digest}</p>
+        <p className="mt-12 text-caption text-fg-3 tabular-nums">Ref {error.digest}</p>
       )}
     </div>
   );
