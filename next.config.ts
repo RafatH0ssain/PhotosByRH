@@ -122,6 +122,10 @@ const nextConfig: NextConfig = {
   reactCompiler: true,
 
   images: {
+    // AVIF first, and it is worth it even though AVIF decodes slower than
+    // WebP: measured cold on a throttled phone, AVIF's 59KB beats WebP's 113KB
+    // end-to-end (908ms vs 1030ms to a painted photo) because the bytes saved
+    // outweigh the extra decode.
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 31536000,
 

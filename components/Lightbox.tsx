@@ -29,8 +29,26 @@ interface LightboxProps {
 const QUALITY = 75;
 const DEVICE_SIZES = [640, 750, 828, 1080, 1200, 1920, 2048, 3840];
 
+/* ── Requested density ───────────────────────────────────────────────────────
+   The photo is laid out at ~100vw, but we deliberately ask for ~64vw worth of
+   pixels. On a 3x phone that lands on a 828px-wide variant instead of a
+   1200px one — about 2x device density rather than 3x.
+
+   The reason is cost. Measured cold, at 1.6Mbps: the 1200px variant is 123KB
+   and takes 0.76s to transform and transfer; the 828px variant is 48KB and
+   takes 0.30s. Two and a half times faster to first sight of the photograph,
+   against a density difference that is invisible on a photograph at arm's
+   length — there is no text or hairline detail here to give it away. It also
+   pulls desktop down from a pointless 3840px request (the masters are only
+   2560px wide) to 1920px.
+
+   `sizes` and this constant must agree, or the prefetch below warms a variant
+   the browser then declines to use. */
+const VIEW_DENSITY = 0.64;
+const SIZES = "64vw";
+
 const optimisedUrl = (src: StaticImageData) => {
-  const target = window.innerWidth * (window.devicePixelRatio || 1);
+  const target = window.innerWidth * VIEW_DENSITY * (window.devicePixelRatio || 1);
   const width =
     DEVICE_SIZES.find((w) => w >= target) ?? DEVICE_SIZES[DEVICE_SIZES.length - 1];
   return `/_next/image?url=${encodeURIComponent(src.src)}&w=${width}&q=${QUALITY}`;
@@ -58,7 +76,6 @@ export default function Lightbox({ index, images, onClose, setIndex, preview }: 
      actually clicked — after that everything is warm anyway. */
   const [openIndex] = useState(index);
   const [fullLoaded, setFullLoaded] = useState(false);
-  const showPreview = Boolean(preview) && index === openIndex && !fullLoaded;
 
   const [neighboursReady, setNeighboursReady] = useState(false);
   useEffect(() => {
@@ -266,15 +283,28 @@ export default function Lightbox({ index, images, onClose, setIndex, preview }: 
     return () => window.removeEventListener("keydown", onKey);
   }, [jump, requestClose]);
 
-  /* Warm the neighbours so arrowing / swiping does not stall on a cold fetch */
+  /* ── Warm the neighbours ───────────────────────────────────────────────────
+     Deliberately gated on the clicked photo having arrived. Firing these on
+     mount put three full-size transforms in flight at once, and the one the
+     user was actually waiting for had to share the optimizer and the
+     connection with two they could not see — measured at ~20x slower for the
+     photo that mattered. Prefetching is a nicety; the photo under the finger
+     is the whole point, so it goes first and alone.
+
+     Low fetch priority for the same reason: even once these start, they must
+     never outrank anything the user is looking at. */
   useEffect(() => {
-    if (count < 2) return;
+    if (count < 2 || !fullLoaded) return;
     const neighbours = [(index + 1) % count, (index - 1 + count) % count];
-    neighbours.forEach((i) => {
-      const img = new window.Image();
-      img.src = optimisedUrl(images[i]);
-    });
-  }, [index, images, count]);
+    const timer = window.setTimeout(() => {
+      neighbours.forEach((i) => {
+        const img = new window.Image();
+        img.fetchPriority = "low";
+        img.src = optimisedUrl(images[i]);
+      });
+    }, 250);
+    return () => window.clearTimeout(timer);
+  }, [index, images, count, fullLoaded]);
 
   useEffect(() => () => { anim.current?.stop(); }, []);
 
@@ -485,7 +515,7 @@ export default function Lightbox({ index, images, onClose, setIndex, preview }: 
                 src={images[i]}
                 alt={`Photograph ${i + 1} of ${count}`}
                 fill
-                sizes="100vw"
+                sizes={SIZES}
                 quality={QUALITY}   /* see the note on QUALITY above */
                 placeholder="blur"
                 priority={slot === 0}
@@ -497,18 +527,26 @@ export default function Lightbox({ index, images, onClose, setIndex, preview }: 
               {/* Stacked above the <Image>, because next/image paints its blur
                   placeholder as the element's own background and would other-
                   wise cover a sharper stand-in sitting underneath it. */}
-              {slot === 0 && showPreview && (
+              {slot === 0 && preview && index === openIndex && (
                 /* Intentionally a raw <img>: `preview` is already a fully
                    resolved, already-downloaded /_next/image URL. Handing it to
                    next/image would build a fresh srcset around it and defeat
-                   the entire point, which is to paint from cache. */
+                   the entire point, which is to paint from cache.
+
+                   It stays mounted and cross-fades out once the full-size copy
+                   has decoded. Unmounting it outright swapped a soft image for
+                   a sharp one in a single frame, which reads as a flicker; a
+                   short fade between two versions of the same photograph reads
+                   as it coming into focus. */
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
-                  src={preview!}
+                  src={preview}
                   alt=""
                   aria-hidden
                   draggable={false}
-                  className="pointer-events-none absolute inset-0 h-full w-full select-none object-contain"
+                  className={`pointer-events-none absolute inset-0 h-full w-full select-none object-contain transition-opacity duration-200 ease-out ${
+                    fullLoaded ? "opacity-0" : "opacity-100"
+                  }`}
                 />
               )}
             </div>
