@@ -1,12 +1,10 @@
 "use client";
-import { useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { useState, type CSSProperties } from "react";
 import Image, { type StaticImageData } from "next/image";
 import Lightbox from "@/components/Lightbox";
+import { useReveal } from "@/components/useReveal";
 
 interface GalleryProps {
-  /** Ghost numeral behind the heading — matches the nav ordering */
-  number:    string;
   title:     string;
   blurb:     string;
   images:    StaticImageData[];
@@ -14,86 +12,59 @@ interface GalleryProps {
   altPrefix: string;
 }
 
+/* First row paints from the HTML so the LCP image never waits on hydration */
+const EAGER = 3;
+
 /**
  * Shared gallery page. Previously this markup was copy-pasted across seven
  * route files that differed only in their data, which meant every fix had to
  * be applied seven times and kept in sync.
  */
-export default function Gallery({ number, title, blurb, images, altPrefix }: GalleryProps) {
+export default function Gallery({ title, blurb, images, altPrefix }: GalleryProps) {
   const [index, setIndex] = useState<number | null>(null);
-  const reduceMotion = useReducedMotion();
+  const gridRef = useReveal<HTMLDivElement>();
 
   return (
-    <div className="max-w-7xl mx-auto px-6 pb-24">
+    <div className="mx-auto max-w-[1400px] px-6 pb-24">
 
-      {/* Ghost number */}
-      <div className="relative select-none pointer-events-none" aria-hidden>
-        <span
-          className="absolute -top-4 -left-2 font-anton text-[clamp(6rem,22vw,18rem)] leading-none tracking-tighter uppercase text-white"
-          style={{ opacity: 0.03 }}
-        >
-          {number}
-        </span>
-      </div>
-
-      {/* Header */}
-      <div className="relative z-10 pt-8 mb-10">
-        <div className="overflow-hidden mb-3">
-          <motion.h1
-            initial={reduceMotion ? { opacity: 0 } : { y: "100%" }}
-            animate={reduceMotion ? { opacity: 1 } : { y: 0 }}
-            transition={{ duration: reduceMotion ? 0.2 : 0.78, ease: [0.76, 0, 0.24, 1] }}
-            className="font-anton text-[clamp(2.5rem,7vw,6rem)] uppercase leading-none tracking-tighter"
-          >
-            {title}
-          </motion.h1>
-        </div>
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: reduceMotion ? 0 : 0.35, duration: reduceMotion ? 0.2 : 0.6 }}
-          className="text-[13px] text-white/35 max-w-lg leading-relaxed font-light"
+      <header className="pt-16 pb-12 md:pt-24 md:pb-16">
+        <h1 className="rise max-w-[16ch] text-title text-balance">{title}</h1>
+        <p
+          className="rise mt-5 max-w-[54ch] text-lead text-fg-2"
+          style={{ "--rise-delay": "90ms" } as CSSProperties}
         >
           {blurb}
-        </motion.p>
-      </div>
+        </p>
+      </header>
 
-      {/* Grid — each cell is a real <button>, so it is reachable by Tab and
-          activates on Enter / Space without any extra key handling. */}
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-[2px] md:gap-[3px]">
-        {images.map((src, i) => (
-          <motion.button
-            key={src.src}
-            type="button"
-            onClick={() => setIndex(i)}
-            aria-label={`Open ${altPrefix} ${i + 1} of ${images.length} in the photo viewer`}
-            initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{
-              duration: reduceMotion ? 0.2 : 0.5,
-              delay:    reduceMotion ? 0 : (i % 3) * 0.06,
-              ease:     [0.22, 1, 0.36, 1],
-            }}
-            className="aspect-[4/5] bg-neutral-950 overflow-hidden relative group cursor-pointer"
-          >
-            <Image
-              src={src}
-              alt={`${altPrefix} ${i + 1}`}
-              fill
-              className="object-cover transition-transform duration-700 md:group-hover:scale-[1.05]"
-              sizes="(max-width: 768px) 50vw, 33vw"
-              placeholder="blur"
-              priority={i < 3}
-            />
-            <div className="absolute top-3 left-3 z-10 pointer-events-none">
-              <span className="text-[9px] text-white/25 tracking-[0.15em]">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-            </div>
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors duration-500" />
-          </motion.button>
-        ))}
+      {/* Each cell is a real <button>, so it is reachable by Tab and activates
+          on Enter / Space without any extra key handling. */}
+      <div ref={gridRef} className="grid grid-cols-2 gap-2.5 md:grid-cols-3 md:gap-4">
+        {images.map((src, i) => {
+          const eager = i < EAGER;
+
+          return (
+            <button
+              key={src.src}
+              type="button"
+              onClick={() => setIndex(i)}
+              aria-label={`Open ${altPrefix.toLowerCase()} photograph ${i + 1} of ${images.length}`}
+              {...(eager ? {} : { "data-reveal": "" })}
+              style={eager ? undefined : ({ "--reveal-delay": `${(i % 3) * 70}ms` } as CSSProperties)}
+              className="group relative aspect-[4/5] overflow-hidden rounded-card bg-elevated transition-transform duration-200 ease-out active:scale-[0.985]"
+            >
+              <Image
+                src={src}
+                alt={`${altPrefix} ${i + 1}`}
+                fill
+                className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
+                sizes="(max-width: 768px) 50vw, 33vw"
+                placeholder="blur"
+                priority={eager}
+              />
+            </button>
+          );
+        })}
       </div>
 
       {index !== null && (

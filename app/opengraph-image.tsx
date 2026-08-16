@@ -20,29 +20,29 @@ export default function OpengraphImage() {
           padding: "72px",
         }}
       >
-        <div style={{ display: "flex", fontSize: 22, letterSpacing: "0.32em", color: "#585a5a" }}>
-          WILDLIFE · SPORTS · BRANDS · PETS · FILM
+        <div style={{ display: "flex", fontSize: 26, color: "rgba(245,245,247,0.42)" }}>
+          Wildlife · Sports · Brands · Pets · Film
         </div>
 
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div
             style={{
               display: "flex",
-              fontSize: 150,
+              fontSize: 132,
               fontWeight: 800,
-              letterSpacing: "-0.05em",
-              color: "#ffffff",
+              letterSpacing: "-0.045em",
+              color: "#f5f5f7",
               lineHeight: 1,
             }}
           >
             PHOTOSBYRH
           </div>
-          <div style={{ display: "flex", marginTop: 26, fontSize: 30, color: "rgba(255,255,255,0.4)" }}>
+          <div style={{ display: "flex", marginTop: 26, fontSize: 30, color: "rgba(245,245,247,0.62)" }}>
             Chasing good light and honest moments.
           </div>
         </div>
 
-        <div style={{ display: "flex", height: 4, width: 190, backgroundColor: "#585a5a" }} />
+        <div style={{ display: "flex", height: 3, width: 160, backgroundColor: "#0a84ff" }} />
       </div>
     ),
     size,

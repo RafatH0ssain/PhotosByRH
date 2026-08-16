@@ -1,152 +1,152 @@
 "use client";
-import { useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { useState, type CSSProperties } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Lightbox from "@/components/Lightbox";
+import { useReveal } from "@/components/useReveal";
 
 import images from "./home-images";
 
-/* 12-column asymmetric grid — [col-span class, aspect-ratio class, sizes hint] */
+/* 12-column asymmetric grid — [span classes, aspect hint, sizes hint].
+   Row height resolves to the tallest cell in the row: a stretched grid item
+   has a definite height, which makes `aspect-ratio` inert, so every row lines
+   up and object-cover absorbs the difference. The aspect class is therefore a
+   rhythm hint, not a hard ratio. */
 const GRID: [string, string, string][] = [
-  ["col-span-12 md:col-span-7", "aspect-[3/4]",  "(max-width: 768px) 100vw, 58vw"],
-  ["col-span-12 md:col-span-5", "aspect-[3/4]",  "(max-width: 768px) 100vw, 42vw"],
-  ["col-span-6  md:col-span-4", "aspect-[4/3]",  "(max-width: 768px) 50vw, 33vw"],
-  ["col-span-6  md:col-span-4", "aspect-[4/3]",  "(max-width: 768px) 50vw, 33vw"],
-  ["col-span-12 md:col-span-4", "aspect-[4/3]",  "(max-width: 768px) 100vw, 33vw"],
-  ["col-span-12 md:col-span-5", "aspect-[4/5]",  "(max-width: 768px) 100vw, 42vw"],
-  ["col-span-12 md:col-span-7", "aspect-[4/5]",  "(max-width: 768px) 100vw, 58vw"],
-  ["col-span-6  md:col-span-3", "aspect-square",  "(max-width: 768px) 50vw, 25vw"],
-  ["col-span-6  md:col-span-5", "aspect-square",  "(max-width: 768px) 50vw, 42vw"],
-  ["col-span-12 md:col-span-4", "aspect-[4/5]",  "(max-width: 768px) 100vw, 33vw"],
-  ["col-span-12 md:col-span-8", "aspect-video",   "(max-width: 768px) 100vw, 66vw"],
-  ["col-span-12 md:col-span-4", "aspect-[4/5]",  "(max-width: 768px) 100vw, 33vw"],
-  ["col-span-6  md:col-span-4", "aspect-[4/5]",  "(max-width: 768px) 50vw, 33vw"],
-  ["col-span-6  md:col-span-4", "aspect-[4/5]",  "(max-width: 768px) 50vw, 33vw"],
-  ["col-span-12 md:col-span-4", "aspect-[4/3]",  "(max-width: 768px) 100vw, 33vw"],
-  ["col-span-12 md:col-span-6", "aspect-video",   "(max-width: 768px) 100vw, 50vw"],
-  ["col-span-12 md:col-span-6", "aspect-video",   "(max-width: 768px) 100vw, 50vw"],
-  ["col-span-6  md:col-span-5", "aspect-[4/5]",  "(max-width: 768px) 50vw, 42vw"],
-  ["col-span-6  md:col-span-7", "aspect-[4/5]",  "(max-width: 768px) 50vw, 58vw"],
-  ["col-span-12 md:col-span-6", "aspect-[4/5]",  "(max-width: 768px) 100vw, 50vw"],
-  ["col-span-12 md:col-span-6", "aspect-[4/5]",  "(max-width: 768px) 100vw, 50vw"],
+  ["col-span-12 md:col-span-7", "aspect-[4/5]",   "(max-width: 768px) 100vw, 58vw"],
+  ["col-span-12 md:col-span-5", "aspect-[4/5]",   "(max-width: 768px) 100vw, 42vw"],
+
+  ["col-span-6  md:col-span-4", "aspect-square",  "(max-width: 768px) 50vw, 33vw"],
+  ["col-span-6  md:col-span-4", "aspect-square",  "(max-width: 768px) 50vw, 33vw"],
+  ["col-span-12 md:col-span-4", "aspect-square",  "(max-width: 768px) 100vw, 33vw"],
+
+  ["col-span-12 md:col-span-8", "aspect-[16/10]", "(max-width: 768px) 100vw, 66vw"],
+  ["col-span-12 md:col-span-4", "aspect-[16/10]", "(max-width: 768px) 100vw, 33vw"],
+
+  ["col-span-6  md:col-span-5", "aspect-[4/5]",   "(max-width: 768px) 50vw, 42vw"],
+  ["col-span-6  md:col-span-7", "aspect-[4/5]",   "(max-width: 768px) 50vw, 58vw"],
+
+  ["col-span-6  md:col-span-4", "aspect-square",  "(max-width: 768px) 50vw, 33vw"],
+  ["col-span-6  md:col-span-4", "aspect-square",  "(max-width: 768px) 50vw, 33vw"],
+  ["col-span-12 md:col-span-4", "aspect-square",  "(max-width: 768px) 100vw, 33vw"],
+
+  ["col-span-12 md:col-span-5", "aspect-[4/5]",   "(max-width: 768px) 100vw, 42vw"],
+  ["col-span-12 md:col-span-7", "aspect-[4/5]",   "(max-width: 768px) 100vw, 58vw"],
+
+  ["col-span-6  md:col-span-6", "aspect-[4/3]",   "(max-width: 768px) 50vw, 50vw"],
+  ["col-span-6  md:col-span-6", "aspect-[4/3]",   "(max-width: 768px) 50vw, 50vw"],
+
+  ["col-span-12 md:col-span-8", "aspect-[16/10]", "(max-width: 768px) 100vw, 66vw"],
+  ["col-span-12 md:col-span-4", "aspect-[16/10]", "(max-width: 768px) 100vw, 33vw"],
+
+  ["col-span-6  md:col-span-4", "aspect-square",  "(max-width: 768px) 50vw, 33vw"],
+  ["col-span-6  md:col-span-4", "aspect-square",  "(max-width: 768px) 50vw, 33vw"],
+  ["col-span-12 md:col-span-4", "aspect-square",  "(max-width: 768px) 100vw, 33vw"],
 ];
 
-const ticker = Array(6)
-  .fill("WILDLIFE · SPORTS · BRANDS · PETS · FILM · CORPORATE · PERSONAL · ")
-  .join("");
+/* The first row paints straight from the HTML. Anything revealed on scroll is
+   invisible until the observer runs, so keeping the LCP candidate out of that
+   set means the largest image is not waiting on hydration. */
+const EAGER = 2;
 
 export default function Home() {
   const [lbIndex, setLbIndex] = useState<number | null>(null);
-  const reduceMotion = useReducedMotion();
+  const gridRef = useReveal<HTMLDivElement>();
 
   return (
-    <div className="max-w-7xl mx-auto px-6 pb-24">
+    <div className="mx-auto max-w-[1400px] px-6">
 
-      {/* ── HERO ─────────────────────────────────────────────────────────── */}
-      <section className="pt-10 md:pt-16 pb-14 border-b border-white/[0.06]">
+      {/* ── Hero ──────────────────────────────────────────────────────────────
+          A CSS animation rather than a motion component: it begins at first
+          paint instead of waiting for the JavaScript bundle, and runs on the
+          compositor. */}
+      <section className="pt-16 pb-16 text-center md:pt-28 md:pb-24">
+        <h1 className="rise mx-auto max-w-[14ch] text-display text-balance">
+          Capturing moments.
+        </h1>
 
-        {/* CAPTURING — text reveal wipe */}
-        <div className="overflow-hidden">
-          <motion.h1
-            initial={reduceMotion ? { opacity: 0 } : { y: "105%" }}
-            animate={reduceMotion ? { opacity: 1 } : { y: 0 }}
-            transition={{ duration: reduceMotion ? 0.2 : 0.9, ease: [0.76, 0, 0.24, 1] }}
-            className="font-anton text-[clamp(3.8rem,14.5vw,13rem)] leading-[0.85] tracking-tighter uppercase"
+        <p
+          className="rise mx-auto mt-6 max-w-[48ch] text-lead text-fg-2 text-balance"
+          style={{ "--rise-delay": "90ms" } as CSSProperties}
+        >
+          Wildlife, sport, portraits and brand work — chasing good light and the
+          small honest details that hold an entire story.
+        </p>
+
+        <div
+          className="rise mt-10 flex flex-wrap items-center justify-center gap-4"
+          style={{ "--rise-delay": "180ms" } as CSSProperties}
+        >
+          <Link
+            href="/contact"
+            className="rounded-pill bg-accent px-7 py-3 text-body font-medium text-white transition-[transform,filter] duration-150 ease-out hover:brightness-110 active:scale-[0.97]"
           >
-            CAPTURING
-          </motion.h1>
-        </div>
-
-        {/* MOMENTS. + right-side bio — staggered row */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mt-1">
-          <div className="overflow-hidden">
-            <motion.h2
-              initial={reduceMotion ? { opacity: 0 } : { y: "105%" }}
-              animate={reduceMotion ? { opacity: 1 } : { y: 0 }}
-              transition={{ duration: reduceMotion ? 0.2 : 0.9, delay: reduceMotion ? 0 : 0.09, ease: [0.76, 0, 0.24, 1] }}
-              className="font-anton text-[clamp(3rem,10.5vw,9.5rem)] leading-[0.85] tracking-tighter uppercase text-white/[0.18]"
-            >
-              MOMENTS.
-            </motion.h2>
-          </div>
-
-          <motion.div
-            initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: reduceMotion ? 0 : 0.55, duration: reduceMotion ? 0.2 : 0.65, ease: [0.22, 1, 0.36, 1] }}
-            className="md:max-w-[280px] shrink-0"
+            Get in touch
+          </Link>
+          <Link
+            href="/about"
+            className="group inline-flex items-center gap-1.5 rounded-pill px-3 py-3 text-body font-medium text-accent transition-transform duration-150 ease-out active:scale-[0.97]"
           >
-            <p className="text-[13px] text-white/35 font-light leading-relaxed mb-5">
-              Hi! I&apos;m a photographer who loves chasing good light and honest moments.
-              Drawn to the small details — expressions, textures, and the way a single
-              photo can hold an entire story.
-            </p>
-            <Link
-              href="/contact"
-              className="group inline-flex items-center gap-3 border border-white/20 px-6 py-3 font-anton text-xs tracking-[0.2em] uppercase hover:border-[#585a5a] hover:text-[#585a5a] transition-colors duration-300"
+            About me
+            <span
+              aria-hidden
+              className="transition-transform duration-300 ease-out group-hover:translate-x-0.5"
             >
-              REACH OUT
-              <span className="translate-x-0 group-hover:translate-x-1 transition-transform duration-300">
-                →
-              </span>
-            </Link>
-          </motion.div>
+              &rsaquo;
+            </span>
+          </Link>
         </div>
       </section>
 
-      {/* ── MARQUEE TICKER ───────────────────────────────────────────────── */}
-      <div className="overflow-hidden border-b border-white/[0.06] py-3 my-8">
-        <div
-          className="flex whitespace-nowrap"
-          style={{ animation: "marquee 35s linear infinite" }}
-        >
-          <span className="text-[9px] tracking-[0.32em] uppercase text-white/[0.18]">{ticker}</span>
-          <span className="text-[9px] tracking-[0.32em] uppercase text-white/[0.18]" aria-hidden>{ticker}</span>
-        </div>
-      </div>
+      {/* ── Selected work ─────────────────────────────────────────────────── */}
+      <section className="pb-24">
+        <h2 className="mb-6 text-headline text-fg-2">Selected work</h2>
 
-      {/* ── ASYMMETRIC 12-COLUMN GRID ─────────────────────────────────────── */}
-      <div className="grid grid-cols-12 gap-[2px] md:gap-[3px]">
-        {images.map((src, i) => {
-          const [colClass, aspectClass, imgSizes] = GRID[i];
-          return (
-            <motion.button
-              key={src.src}
-              type="button"
-              onClick={() => setLbIndex(i)}
-              aria-label={`Open featured work ${i + 1} of ${images.length} in the photo viewer`}
-              initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{
-                duration: reduceMotion ? 0.2 : 0.5,
-                delay:    reduceMotion ? 0 : (i % 4) * 0.055,
-                ease:     [0.22, 1, 0.36, 1],
-              }}
-              className={`${colClass} ${aspectClass} bg-neutral-950 overflow-hidden relative group cursor-pointer`}
-            >
-              <Image
-                src={src}
-                alt={`Featured work ${i + 1}`}
-                fill
-                className="object-cover transition-transform duration-700 md:group-hover:scale-[1.05]"
-                sizes={imgSizes}
-                placeholder="blur"
-                priority={i < 2}
-              />
-              {/* Card index */}
-              <div className="absolute top-3 left-3 z-10 pointer-events-none">
-                <span className="text-[9px] text-white/25 tracking-[0.15em]">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-              </div>
-              {/* Hover vignette */}
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors duration-500" />
-            </motion.button>
-          );
-        })}
-      </div>
+        <div ref={gridRef} className="grid grid-cols-12 gap-2.5 md:gap-4">
+          {images.map((src, i) => {
+            const [colClass, aspectClass, imgSizes] = GRID[i];
+            const eager = i < EAGER;
+
+            return (
+              <button
+                key={src.src}
+                type="button"
+                onClick={() => setLbIndex(i)}
+                aria-label={`Open featured photograph ${i + 1} of ${images.length}`}
+                {...(eager ? {} : { "data-reveal": "" })}
+                style={eager ? undefined : ({ "--reveal-delay": `${(i % 3) * 70}ms` } as CSSProperties)}
+                className={`${colClass} ${aspectClass} group relative overflow-hidden rounded-card bg-elevated transition-transform duration-200 ease-out active:scale-[0.985]`}
+              >
+                <Image
+                  src={src}
+                  alt={`Featured photograph ${i + 1}`}
+                  fill
+                  className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
+                  sizes={imgSizes}
+                  placeholder="blur"
+                  priority={eager}
+                />
+              </button>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* ── Closing CTA ───────────────────────────────────────────────────── */}
+      <section className="border-t border-hairline py-20 text-center md:py-28">
+        <h2 className="mx-auto max-w-[18ch] text-title text-balance">
+          Have something in mind?
+        </h2>
+        <p className="mx-auto mt-5 max-w-[42ch] text-lead text-fg-2 text-balance">
+          Bookings, quotes, or just to say hi — I read everything that comes in.
+        </p>
+        <Link
+          href="/contact"
+          className="mt-9 inline-block rounded-pill bg-accent px-7 py-3 text-body font-medium text-white transition-[transform,filter] duration-150 ease-out hover:brightness-110 active:scale-[0.97]"
+        >
+          Start a conversation
+        </Link>
+      </section>
 
       {lbIndex !== null && (
         <Lightbox

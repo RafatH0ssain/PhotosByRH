@@ -5,7 +5,6 @@ import images from "./images";
 export default function BrandsGallery() {
   return (
     <Gallery
-      number="05"
       title="Brands"
       blurb="Helping businesses tell their visual story. Clean, compelling images that showcase products, services, and identity to connect with an audience."
       images={images}

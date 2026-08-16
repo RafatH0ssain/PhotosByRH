@@ -1,19 +1,22 @@
 "use client";
-import { useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { useState, type CSSProperties } from "react";
 
 const FORMSPREE_ENDPOINT = "https://formspree.io/f/mjgbljnl";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
 const MESSAGES: Record<Exclude<Status, "idle" | "sending">, string> = {
-  sent:  "MESSAGE SENT. I WILL GET BACK TO YOU SHORTLY.",
-  error: "SOMETHING WENT WRONG. PLEASE TRY AGAIN.",
+  sent:  "Message sent. I'll get back to you shortly.",
+  error: "Something went wrong. Please try again.",
 };
+
+const FIELD =
+  "w-full rounded-card border border-hairline bg-elevated px-4 py-3.5 text-body " +
+  "text-fg outline-none transition-[border-color,background-color] duration-200 " +
+  "ease-out placeholder:text-fg-4 focus:border-accent focus:bg-raised";
 
 export default function Contact() {
   const [status, setStatus] = useState<Status>("idle");
-  const reduceMotion = useReducedMotion();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -24,7 +27,7 @@ export default function Contact() {
 
     /* A rejected fetch — offline, DNS failure, blocked by an extension — used
        to throw straight out of this handler as an unhandled rejection, leaving
-       the button disabled on "SENDING..." forever with no way to retry. */
+       the button disabled on "Sending…" forever with no way to retry. */
     try {
       const response = await fetch(FORMSPREE_ENDPOINT, {
         method:  "POST",
@@ -46,122 +49,111 @@ export default function Contact() {
   const sending = status === "sending";
 
   return (
-    <div className="max-w-7xl mx-auto px-6 pb-24 pt-8">
+    <div className="mx-auto max-w-[1400px] px-6 pb-24">
 
-      {/* Ghost label */}
-      <div className="relative select-none pointer-events-none" aria-hidden>
-        <span
-          className="absolute -top-2 -left-2 font-anton text-[clamp(6rem,22vw,18rem)] leading-none tracking-tighter uppercase text-white"
-          style={{ opacity: 0.025 }}
+      <header className="pt-16 pb-12 text-center md:pt-28 md:pb-16">
+        <h1 className="rise mx-auto max-w-[14ch] text-display text-balance">
+          Let&apos;s connect.
+        </h1>
+        <p
+          className="rise mx-auto mt-6 max-w-[46ch] text-lead text-fg-2 text-balance"
+          style={{ "--rise-delay": "90ms" } as CSSProperties}
         >
-          08
-        </span>
-      </div>
-
-      <motion.div
-        initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 14 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: reduceMotion ? 0.2 : 0.55, ease: [0.22, 1, 0.36, 1] }}
-        className="max-w-xl relative z-10 pt-6"
-      >
-        {/* Header */}
-        <div className="overflow-hidden mb-2">
-          <motion.h1
-            initial={reduceMotion ? { opacity: 0 } : { y: "100%" }}
-            animate={reduceMotion ? { opacity: 1 } : { y: 0 }}
-            transition={{ duration: reduceMotion ? 0.2 : 0.8, ease: [0.76, 0, 0.24, 1] }}
-            className="font-anton text-[clamp(2.8rem,8vw,6rem)] uppercase leading-none tracking-tighter"
-          >
-            Let&apos;s Connect
-          </motion.h1>
-        </div>
-        <p className="text-[13px] text-white/35 mb-10 font-light">
           For bookings, quotes, or just to say hi.
         </p>
+      </header>
 
-        <form onSubmit={handleSubmit} className="space-y-8 font-sans">
+      <form
+        onSubmit={handleSubmit}
+        className="rise mx-auto max-w-xl space-y-4"
+        style={{ "--rise-delay": "160ms" } as CSSProperties}
+      >
+        {/* Honeypot — hidden from people, irresistible to bots. Formspree
+            discards any submission that arrives with _gotcha filled in. */}
+        <div className="absolute -left-[9999px] h-px w-px overflow-hidden" aria-hidden>
+          <label htmlFor="_gotcha">Leave this field empty</label>
+          <input id="_gotcha" name="_gotcha" type="text" tabIndex={-1} autoComplete="off" />
+        </div>
 
-          {/* Honeypot — hidden from people, irresistible to bots. Formspree
-              discards any submission that arrives with _gotcha filled in. */}
-          <div className="absolute -left-[9999px] w-px h-px overflow-hidden" aria-hidden>
-            <label htmlFor="_gotcha">Leave this field empty</label>
-            <input id="_gotcha" name="_gotcha" type="text" tabIndex={-1} autoComplete="off" />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="group border-b border-white/15 focus-within:border-white transition-colors duration-300">
-              <input
-                name="name"
-                placeholder="NAME"
-                required
-                maxLength={100}
-                autoComplete="name"
-                className="w-full bg-transparent py-3 text-sm outline-none placeholder:text-white/20 tracking-[0.08em]"
-              />
-            </div>
-            <div className="group border-b border-white/15 focus-within:border-white transition-colors duration-300">
-              <input
-                name="email"
-                type="email"
-                placeholder="EMAIL"
-                required
-                maxLength={254}
-                autoComplete="email"
-                // type="email" on its own accepts "a@b" with no TLD
-                pattern="[^@\s]+@[^@\s]+\.[A-Za-z]{2,}"
-                title="Enter a valid email address, for example name@example.com"
-                className="w-full bg-transparent py-3 text-sm outline-none placeholder:text-white/20 tracking-[0.08em]"
-              />
-            </div>
-          </div>
-
-          <div className="border-b border-white/15 focus-within:border-white transition-colors duration-300">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div>
+            <label htmlFor="name" className="sr-only">Name</label>
             <input
-              name="phone"
-              type="tel"
-              placeholder="PHONE (OPTIONAL)"
-              maxLength={32}
-              autoComplete="tel"
-              className="w-full bg-transparent py-3 text-sm outline-none placeholder:text-white/20 tracking-[0.08em]"
-            />
-          </div>
-
-          <div className="border-b border-white/15 focus-within:border-white transition-colors duration-300">
-            <textarea
-              name="message"
-              rows={5}
-              placeholder="YOUR MESSAGE"
+              id="name"
+              name="name"
+              placeholder="Name"
               required
-              maxLength={5000}
-              className="w-full bg-transparent py-3 text-sm outline-none placeholder:text-white/20 tracking-[0.08em] resize-none"
+              maxLength={100}
+              autoComplete="name"
+              className={FIELD}
             />
           </div>
+          <div>
+            <label htmlFor="email" className="sr-only">Email</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="Email"
+              required
+              maxLength={254}
+              autoComplete="email"
+              // type="email" on its own accepts "a@b" with no TLD
+              pattern="[^@\s]+@[^@\s]+\.[A-Za-z]{2,}"
+              title="Enter a valid email address, for example name@example.com"
+              className={FIELD}
+            />
+          </div>
+        </div>
 
+        <div>
+          <label htmlFor="phone" className="sr-only">Phone (optional)</label>
+          <input
+            id="phone"
+            name="phone"
+            type="tel"
+            placeholder="Phone (optional)"
+            maxLength={32}
+            autoComplete="tel"
+            className={FIELD}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="message" className="sr-only">Your message</label>
+          <textarea
+            id="message"
+            name="message"
+            rows={6}
+            placeholder="Your message"
+            required
+            maxLength={5000}
+            className={`${FIELD} resize-none`}
+          />
+        </div>
+
+        <div className="flex flex-wrap items-center gap-4 pt-2">
           <button
             type="submit"
-            className="group inline-flex items-center gap-4 border border-white/25 px-8 py-4 font-anton text-xs tracking-[0.22em] uppercase hover:border-[#585a5a] hover:text-[#585a5a] transition-colors duration-300 disabled:opacity-40"
             disabled={sending}
+            className="rounded-pill bg-accent px-7 py-3 text-body font-medium text-white transition-[transform,filter,opacity] duration-150 ease-out hover:brightness-110 active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50"
           >
-            {sending ? "SENDING..." : "SUBMIT MESSAGE"}
-            <span className="translate-x-0 group-hover:translate-x-1 transition-transform duration-300">→</span>
+            {sending ? "Sending…" : "Send message"}
           </button>
 
           {/* aria-live so the outcome is announced, not just shown */}
-          <div role="status" aria-live="polite">
+          <div role="status" aria-live="polite" className="min-h-5">
             {(status === "sent" || status === "error") && (
-              <motion.p
-                initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                className={`text-[11px] tracking-[0.12em] font-sans ${
-                  status === "error" ? "text-red-400" : "text-white/40"
-                }`}
+              <p
+                className={`text-body ${status === "error" ? "text-red-400" : "text-fg-2"}`}
+                style={{ animation: "rise 400ms cubic-bezier(0.23, 1, 0.32, 1) both" }}
               >
                 {MESSAGES[status]}
-              </motion.p>
+              </p>
             )}
           </div>
-        </form>
-      </motion.div>
+        </div>
+      </form>
     </div>
   );
 }
