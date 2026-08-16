@@ -37,9 +37,12 @@ export function useReveal<T extends HTMLElement>() {
           io.unobserve(entry.target);
         }
       },
-      // Fire a little before the element is fully on screen so the motion has
-      // finished by the time it reaches comfortable reading position.
-      { rootMargin: "0px 0px -10% 0px", threshold: 0.01 },
+      /* A positive bottom margin, so a card begins revealing a screenful
+         before it scrolls into view and is already settled by the time it is
+         actually looked at. A negative margin here (waiting until the card is
+         10% inside the viewport) made images that had long since finished
+         downloading look like they were still loading. */
+      { rootMargin: "0px 0px 300px 0px", threshold: 0.01 },
     );
 
     targets.forEach((el) => io.observe(el));

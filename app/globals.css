@@ -25,14 +25,11 @@
   --color-fg-4: rgba(245, 245, 247, 0.38);    /*  3.1:1 — placeholders and
                                                   non-essential labels only */
 
-  /* Two blues, because one cannot satisfy both jobs on a black page.
-     `accent` is the dark-mode system blue and is read *as* text — 5.8:1 on
-     canvas. `accent-solid` is Apple's button blue, dark enough that a white
-     label sitting on top of it clears 4.5:1, which the lighter one does not
-     (it manages only 3.7:1). Reserved for genuine affordances — links, focus
-     rings, primary actions — never decoration. */
-  --color-accent:       #0a84ff;
-  --color-accent-solid: #0071e3;
+  /* The palette is monochrome on purpose. On a page that is almost entirely
+     photographs, a saturated UI colour competes with the only thing that is
+     supposed to carry colour. A white fill on black is also the strongest
+     contrast available — 19.3:1 for the label — so the primary action reads as
+     the primary action without a hue doing the work. */
 
   /* ── Type families ───────────────────────────────────────────────────────
      The system font is the default because it already ships optical sizing,
@@ -113,14 +110,14 @@
   }
 
   ::selection {
-    background: var(--color-accent-solid);
-    color: #fff;
+    background: var(--color-fg);
+    color: var(--color-canvas);
   }
 
   /* Keyboard focus is visible everywhere. Gallery cards are real buttons, so
      without this they would focus silently. */
   :focus-visible {
-    outline: 2px solid var(--color-accent);
+    outline: 2px solid var(--color-fg);
     outline-offset: 3px;
     border-radius: 6px;
   }
@@ -152,17 +149,18 @@
       opacity: 0;
       transform: translate3d(0, 16px, 0);
       transition:
-        opacity   700ms var(--ease-out),
-        transform 700ms var(--ease-out);
+        opacity   400ms var(--ease-out),
+        transform 400ms var(--ease-out);
       transition-delay: var(--reveal-delay, 0ms);
-      will-change: opacity, transform;
+      /* Deliberately no `will-change`. This rule matches every not-yet-revealed
+         card at once, so hinting here promoted ~19 elements to their own
+         compositor layers simultaneously and cost more than it saved. */
     }
   }
 
   [data-reveal="in"] {
     opacity: 1;
     transform: none;
-    will-change: auto;
   }
 
   /* The lightbox drag surface. Two declarations, not one: a browser that does
@@ -228,13 +226,9 @@
   }
 }
 
-/* ─── Lightbox entrance ────────────────────────────────────────────────────── */
+/* ─── Lightbox scrim ────────────────────────────────────────────────────── */
 @keyframes lb-scrim {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
 
-@keyframes lb-photo {
-  from { opacity: 0; transform: scale(0.94); }
-  to   { opacity: 1; transform: none; }
-}

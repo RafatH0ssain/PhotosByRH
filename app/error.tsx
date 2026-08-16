@@ -30,13 +30,13 @@ export default function Error({
         <button
           type="button"
           onClick={reset}
-          className="rounded-pill bg-accent-solid px-7 py-3 text-body font-medium text-white transition-[transform,filter] duration-150 ease-out hover:brightness-110 active:scale-[0.97]"
+          className="rounded-pill bg-fg px-7 py-3 text-body font-medium text-canvas transition-[transform,background-color] duration-150 ease-out hover:bg-white active:scale-[0.97]"
         >
           Try again
         </button>
         <Link
           href="/"
-          className="group inline-flex items-center gap-1.5 rounded-pill px-3 py-3 text-body font-medium text-accent transition-transform duration-150 ease-out active:scale-[0.97]"
+          className="group inline-flex items-center gap-1.5 rounded-pill px-3 py-3 text-body font-medium text-fg transition-transform duration-150 ease-out active:scale-[0.97]"
         >
           Back to the work
           <span aria-hidden className="transition-transform duration-300 ease-out group-hover:translate-x-0.5">
