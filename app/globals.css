@@ -19,14 +19,20 @@
   /* ── Content ─────────────────────────────────────────────────────────────
      Not pure white. #f5f5f7 is Apple's dark-mode label colour; pure #fff on
      pure #000 is a harsher contrast than any Apple surface actually ships. */
-  --color-fg:   #f5f5f7;
-  --color-fg-2: rgba(245, 245, 247, 0.66);
-  --color-fg-3: rgba(245, 245, 247, 0.42);
-  --color-fg-4: rgba(245, 245, 247, 0.24);
+  --color-fg:   #f5f5f7;                      /* 19.3:1 on canvas */
+  --color-fg-2: rgba(245, 245, 247, 0.66);    /*  8.2:1 — body copy       */
+  --color-fg-3: rgba(245, 245, 247, 0.48);    /*  4.6:1 — passes AA at any size */
+  --color-fg-4: rgba(245, 245, 247, 0.38);    /*  3.1:1 — placeholders and
+                                                  non-essential labels only */
 
-  /* Apple's dark-mode system blue. Reserved for genuine affordances —
-     focus rings, links, form focus — never decoration. */
-  --color-accent: #0a84ff;
+  /* Two blues, because one cannot satisfy both jobs on a black page.
+     `accent` is the dark-mode system blue and is read *as* text — 5.8:1 on
+     canvas. `accent-solid` is Apple's button blue, dark enough that a white
+     label sitting on top of it clears 4.5:1, which the lighter one does not
+     (it manages only 3.7:1). Reserved for genuine affordances — links, focus
+     rings, primary actions — never decoration. */
+  --color-accent:       #0a84ff;
+  --color-accent-solid: #0071e3;
 
   /* ── Type families ───────────────────────────────────────────────────────
      The system font is the default because it already ships optical sizing,
@@ -107,7 +113,7 @@
   }
 
   ::selection {
-    background: var(--color-accent);
+    background: var(--color-accent-solid);
     color: #fff;
   }
 

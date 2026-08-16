@@ -79,7 +79,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <span className="font-mark text-base tracking-tight text-fg-3">
               PHOTOSBYRH
             </span>
-            <span className="text-caption text-fg-4">
+            <span className="text-caption text-fg-3">
               &copy; {new Date().getFullYear()} Rafat Hossain
             </span>
           </div>

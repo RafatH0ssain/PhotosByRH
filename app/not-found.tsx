@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function NotFound() {
   return (
     <div className="mx-auto flex min-h-[70vh] max-w-[1400px] flex-col items-center justify-center px-6 py-24 text-center">
-      <p className="rise text-micro uppercase text-fg-4">Error 404</p>
+      <p className="rise text-micro uppercase text-fg-3">Error 404</p>
       <h1 className="rise mt-4 max-w-[16ch] text-title text-balance">
         This page doesn&apos;t exist.
       </h1>
@@ -21,7 +21,7 @@ export default function NotFound() {
       <div className="rise mt-9 flex flex-wrap items-center justify-center gap-4">
         <Link
           href="/"
-          className="rounded-pill bg-accent px-7 py-3 text-body font-medium text-white transition-[transform,filter] duration-150 ease-out hover:brightness-110 active:scale-[0.97]"
+          className="rounded-pill bg-accent-solid px-7 py-3 text-body font-medium text-white transition-[transform,filter] duration-150 ease-out hover:brightness-110 active:scale-[0.97]"
         >
           Back to the work
         </Link>

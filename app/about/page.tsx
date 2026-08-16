@@ -62,7 +62,7 @@ export default function About() {
           <div className="mt-12 border-t border-hairline pt-10">
             <Link
               href="/contact"
-              className="inline-block rounded-pill bg-accent px-7 py-3 text-body font-medium text-white transition-[transform,filter] duration-150 ease-out hover:brightness-110 active:scale-[0.97]"
+              className="inline-block rounded-pill bg-accent-solid px-7 py-3 text-body font-medium text-white transition-[transform,filter] duration-150 ease-out hover:brightness-110 active:scale-[0.97]"
             >
               Let&apos;s work together
             </Link>
