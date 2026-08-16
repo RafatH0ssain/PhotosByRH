@@ -3,95 +3,232 @@
 /* ─── Design tokens ──────────────────────────────────────────────────────────
    Tailwind v4 is CSS-first: this @theme block is the single source of truth.
    There is no tailwind.config.ts — v4 only loads a JS config via an explicit
-   @config directive, so keeping one around meant two competing token sets and
-   a real risk that `font-anton` resolved to nothing.
-
-   next/font exposes its generated families as --font-anton-src /
-   --font-geist-src (set on <body> in app/layout.tsx). We wrap those here so
-   the utilities carry a sane fallback stack if the font request ever fails.
+   @config directive, so keeping one around meant two competing token sets.
    ─────────────────────────────────────────────────────────────────────────── */
 @theme {
-  --color-background: #000000;
-  --color-foreground: #ffffff;
-  --color-accent:     #585a5a;
+  /* ── Surfaces ──────────────────────────────────────────────────────────────
+     Pure black stays the page ground so photographs bleed out to nothing at the
+     edges. Everything that floats above it sits on a slightly raised surface —
+     on #000 a translucent material has nothing to separate against and the
+     blur reads as a flat dark rectangle. */
+  --color-canvas:       #000000;
+  --color-elevated:   #0b0b0d;
+  --color-raised:     #17171a;
+  --color-hairline:   rgba(255, 255, 255, 0.08);
 
-  --font-anton: var(--font-anton-src), "Arial Narrow", Impact, sans-serif;
-  --font-sans:  var(--font-geist-src), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  /* ── Content ─────────────────────────────────────────────────────────────
+     Not pure white. #f5f5f7 is Apple's dark-mode label colour; pure #fff on
+     pure #000 is a harsher contrast than any Apple surface actually ships. */
+  --color-fg:   #f5f5f7;
+  --color-fg-2: rgba(245, 245, 247, 0.66);
+  --color-fg-3: rgba(245, 245, 247, 0.42);
+  --color-fg-4: rgba(245, 245, 247, 0.24);
+
+  /* Apple's dark-mode system blue. Reserved for genuine affordances —
+     focus rings, links, form focus — never decoration. */
+  --color-accent: #0a84ff;
+
+  /* ── Type families ───────────────────────────────────────────────────────
+     The system font is the default because it already ships optical sizing,
+     tracking tables and legibility tuning that no webfont download can beat,
+     and it costs zero bytes. Anton survives only as the wordmark. */
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+               "Segoe UI", system-ui, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mark: var(--font-anton-src), "Arial Narrow", Impact, sans-serif;
+
+  /* ── Type scale ──────────────────────────────────────────────────────────
+     Tracking is size-specific, never one value for everything: letters read
+     too far apart as they grow, so display sizes go negative and small text
+     goes slightly positive. Leading tightens as size increases. */
+  --text-display: clamp(3rem, 9vw, 6.75rem);
+  --text-display--line-height: 1.015;
+  --text-display--letter-spacing: -0.04em;
+  --text-display--font-weight: 600;
+
+  --text-title: clamp(2.25rem, 5.5vw, 4rem);
+  --text-title--line-height: 1.06;
+  --text-title--letter-spacing: -0.032em;
+  --text-title--font-weight: 600;
+
+  --text-headline: clamp(1.3125rem, 2.4vw, 1.6875rem);
+  --text-headline--line-height: 1.22;
+  --text-headline--letter-spacing: -0.02em;
+  --text-headline--font-weight: 600;
+
+  --text-lead: 1.0625rem;          /* 17px — Apple's body size */
+  --text-lead--line-height: 1.55;
+  --text-lead--letter-spacing: -0.011em;
+
+  --text-body: 0.9375rem;          /* 15px */
+  --text-body--line-height: 1.6;
+  --text-body--letter-spacing: -0.006em;
+
+  --text-caption: 0.8125rem;       /* 13px */
+  --text-caption--line-height: 1.45;
+  --text-caption--letter-spacing: 0;
+
+  --text-micro: 0.6875rem;         /* 11px — positive tracking to stay legible */
+  --text-micro--line-height: 1.3;
+  --text-micro--letter-spacing: 0.045em;
+
+  /* ── Radii ───────────────────────────────────────────────────────────────── */
+  --radius-card:  0.875rem;
+  --radius-sheet: 1.25rem;
+  --radius-pill:  980px;
+
+  /* ── Easing ──────────────────────────────────────────────────────────────
+     These deliberately override Tailwind's defaults. The built-in curves are
+     too weak to read as intentional. `ease-in` is absent on purpose: it delays
+     the first frames, which is exactly when the user is watching hardest. */
+  --ease-out:    cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-sheet:  cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 @layer base {
-  :root {
-    color-scheme: dark !important;
-  }
+  :root { color-scheme: dark; }
 
   html {
-    background-color: #000000 !important;
-    color:            #ffffff !important;
-    overflow-y:       scroll;           /* MOBILE CRITICAL — prevents scroll-locking  */
-    touch-action:     manipulation;     /* MOBILE CRITICAL — prevents iOS gesture bugs */
+    background-color: var(--color-canvas);
+    overflow-y:   scroll;        /* MOBILE CRITICAL — prevents scroll-locking  */
+    touch-action: manipulation;  /* MOBILE CRITICAL — prevents iOS gesture bugs */
+    -webkit-text-size-adjust: 100%;
   }
 
   body {
-    margin:           0;
-    padding:          0;
-    overflow-x:       hidden;
-    background-color: #000000;
-    color:            #ffffff;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    background-color: var(--color-canvas);
+    color: var(--color-fg);
+    font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Subtle film-grain overlay */
-  body::before {
-    content:            "";
-    position:           fixed;
-    inset:              0;
-    pointer-events:     none;
-    z-index:            9997;
-    opacity:            0.04;
-    background-image:   url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
-    background-repeat:  repeat;
-    background-size:    200px 200px;
+  ::selection {
+    background: var(--color-accent);
+    color: #fff;
   }
 
-  main, section, header, footer {
-    background-color: #000000;
-    color:            #ffffff;
-  }
-
-  /* Keyboard focus is visible everywhere. Gallery cards are real buttons now,
-     so without this they would focus silently. */
+  /* Keyboard focus is visible everywhere. Gallery cards are real buttons, so
+     without this they would focus silently. */
   :focus-visible {
-    outline:        2px solid var(--color-accent);
-    outline-offset: 2px;
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 6px;
   }
-}
 
-/* Marquee scroll animation */
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
-
-@layer utilities {
+  /* Autofill would otherwise repaint fields in Chrome's yellow */
   input:-webkit-autofill,
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus {
-    -webkit-text-fill-color:  #ffffff !important;
-    -webkit-box-shadow:       0 0 0px 1000px #000000 inset !important;
-    transition:               background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: var(--color-fg) !important;
+    -webkit-box-shadow: 0 0 0 1000px var(--color-canvas) inset !important;
+    transition: background-color 5000s ease-in-out 0s;
   }
 }
 
+@layer components {
+  /* ── Scroll reveal ─────────────────────────────────────────────────────────
+     A CSS transition driven by one shared IntersectionObserver, rather than a
+     motion component per card. Transitions run off the main thread, so the
+     reveal stays smooth while the browser is still decoding images — which is
+     exactly when a requestAnimationFrame-driven animation drops frames.
+
+     The hidden state is gated behind `scripting: enabled` so that a browser
+     without JS (or without support for the query) simply renders everything
+     visible instead of a blank page. Above-the-fold items never get the
+     attribute at all, so the LCP element is painted from the HTML and is not
+     waiting on hydration. */
+  @media (scripting: enabled) {
+    [data-reveal] {
+      opacity: 0;
+      transform: translate3d(0, 16px, 0);
+      transition:
+        opacity   700ms var(--ease-out),
+        transform 700ms var(--ease-out);
+      transition-delay: var(--reveal-delay, 0ms);
+      will-change: opacity, transform;
+    }
+  }
+
+  [data-reveal="in"] {
+    opacity: 1;
+    transform: none;
+    will-change: auto;
+  }
+
+  /* The lightbox drag surface. Two declarations, not one: a browser that does
+     not know `pinch-zoom` drops that line and keeps `none`, which is safe.
+     Without the fallback it would reset to `auto` and the browser would try to
+     pan the page underneath the gesture we are tracking. */
+  .drag-surface {
+    touch-action: none;
+    touch-action: pinch-zoom;
+  }
+
+  /* ── Hero entrance ─────────────────────────────────────────────────────────
+     A plain CSS animation, not a motion component: it starts at first paint
+     instead of waiting for hydration, and runs off the main thread. */
+  .rise {
+    animation: rise 900ms var(--ease-out) both;
+    animation-delay: var(--rise-delay, 0ms);
+  }
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translate3d(0, 20px, 0); }
+  to   { opacity: 1; transform: none; }
+}
+
 /* ─── Reduced motion ─────────────────────────────────────────────────────────
-   Kills the CSS marquee and collapses transitions. Framer Motion components
+   Reduced motion means gentler, not absent. Opacity still carries meaning —
+   only the vestibular part (movement) is removed. Framer Motion components
    handle their own via useReducedMotion(); this covers everything else.
    ─────────────────────────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
-    animation-duration:        0.01ms !important;
-    animation-iteration-count: 1      !important;
-    transition-duration:       0.01ms !important;
-    scroll-behavior:           auto   !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
+
+  [data-reveal],
+  .rise {
+    transform: none !important;
+  }
+}
+
+/* Translucent chrome becomes frosted-solid when the user asks for it, and
+   near-solid with a defined border when they ask for more contrast. */
+@media (prefers-reduced-transparency: reduce) {
+  .material {
+    background-color: var(--color-elevated) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .material {
+    background-color: #000 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border-color: rgba(255, 255, 255, 0.5) !important;
+  }
+}
+
+/* ─── Lightbox entrance ────────────────────────────────────────────────────── */
+@keyframes lb-scrim {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes lb-photo {
+  from { opacity: 0; transform: scale(0.94); }
+  to   { opacity: 1; transform: none; }
 }
