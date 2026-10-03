@@ -4,7 +4,7 @@ Photography portfolio for Rafat Hossain — wildlife, sports, pets, film, brands
 
 ![The About page of PhotosByRH — the heading "Behind the lens." above a black-and-white portrait of Rafat photographing down a city street, beside the introduction text and a "Let's work together" button](public/About/GitHub_Img.png)
 
-**Live:** [photosbyrh.vercel.app](https://photosbyrh.vercel.app)
+**Live:** [photo.rafathossain.com](https://photo.rafathossain.com)
 
 Built with Next.js 16, React 19, Tailwind CSS v4 and Framer Motion. Page and
 grid motion is plain CSS transitions so it runs on the compositor; Framer
