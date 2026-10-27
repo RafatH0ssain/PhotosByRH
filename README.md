@@ -6,6 +6,10 @@ Photography portfolio for Rafat Hossain: wildlife, sports, pets, film, brands, a
 
 **Live:** [photo.rafathossain.com](https://photo.rafathossain.com)
 
+![The PhotosByRH home page: the headline "Capturing moments." above a grid of selected wildlife and city photographs](public/About/Grid_Screenshot.webp)
+
+The landing page and gallery grid.
+
 Built with Next.js 16, React 19, Tailwind CSS v4 and Framer Motion. Page and
 grid motion is plain CSS transitions so it runs on the compositor; Framer
 Motion is used by the lightbox.
