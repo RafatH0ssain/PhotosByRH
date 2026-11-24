@@ -20,6 +20,7 @@ const DESCRIPTION =
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
+  alternates: { canonical: "/" },
   title: {
     default:  "PhotosByRH",
     template: "%s | PhotosByRH",

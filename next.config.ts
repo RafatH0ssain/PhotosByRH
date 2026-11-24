@@ -87,7 +87,6 @@ const securityHeaders = [
       "camera=()",
       "microphone=()",
       "geolocation=()",
-      "interest-cohort=()",
       "payment=()",
       "usb=()",
     ].join(", "),
@@ -119,6 +118,7 @@ const securityHeaders = [
 // ─────────────────────────────────────────────────────────────────────────────
 
 const nextConfig: NextConfig = {
+  poweredByHeader: false,
   reactCompiler: true,
 
   images: {
