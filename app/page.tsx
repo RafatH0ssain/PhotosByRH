@@ -1,47 +1,49 @@
 "use client";
 import { useState, type CSSProperties } from "react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
-import Lightbox from "@/components/Lightbox";
 import { useReveal } from "@/components/useReveal";
 
 import images from "./home-images";
 
-/* 12-column asymmetric grid — [span classes, aspect hint, sizes hint].
-   Row height resolves to the tallest cell in the row: a stretched grid item
-   has a definite height, which makes `aspect-ratio` inert, so every row lines
-   up and object-cover absorbs the difference. The aspect class is therefore a
-   rhythm hint, not a hard ratio. */
+const Lightbox = dynamic(() => import("@/components/Lightbox"), { ssr: false });
+
+/* 12-column asymmetric grid — [span classes, aspect classes, sizes hint].
+   In CSS Grid, an item with an explicit aspect-ratio and height: auto keeps its
+   own ratio instead of stretching to the row height. On desktop asymmetric
+   pairs, the wider cell sets the row height and the narrower sibling drops its
+   aspect-ratio (md:aspect-auto) so it stretches flush with its partner. */
 const GRID: [string, string, string][] = [
-  ["col-span-12 md:col-span-7", "aspect-[4/5]",   "(max-width: 768px) 100vw, 58vw"],
-  ["col-span-12 md:col-span-5", "aspect-[4/5]",   "(max-width: 768px) 100vw, 42vw"],
+  ["col-span-12 md:col-span-7", "aspect-[4/5]",                  "(max-width: 768px) 100vw, 58vw"],
+  ["col-span-12 md:col-span-5", "aspect-[4/5] md:aspect-auto",   "(max-width: 768px) 100vw, 42vw"],
 
-  ["col-span-6  md:col-span-4", "aspect-square",  "(max-width: 768px) 50vw, 33vw"],
-  ["col-span-6  md:col-span-4", "aspect-square",  "(max-width: 768px) 50vw, 33vw"],
-  ["col-span-12 md:col-span-4", "aspect-square",  "(max-width: 768px) 100vw, 33vw"],
+  ["col-span-6  md:col-span-4", "aspect-square",                 "(max-width: 768px) 50vw, 33vw"],
+  ["col-span-6  md:col-span-4", "aspect-square",                 "(max-width: 768px) 50vw, 33vw"],
+  ["col-span-12 md:col-span-4", "aspect-square",                 "(max-width: 768px) 100vw, 33vw"],
 
-  ["col-span-12 md:col-span-8", "aspect-[16/10]", "(max-width: 768px) 100vw, 66vw"],
-  ["col-span-12 md:col-span-4", "aspect-[16/10]", "(max-width: 768px) 100vw, 33vw"],
+  ["col-span-12 md:col-span-8", "aspect-[16/10]",                "(max-width: 768px) 100vw, 66vw"],
+  ["col-span-12 md:col-span-4", "aspect-[16/10] md:aspect-auto", "(max-width: 768px) 100vw, 33vw"],
 
-  ["col-span-6  md:col-span-5", "aspect-[4/5]",   "(max-width: 768px) 50vw, 42vw"],
-  ["col-span-6  md:col-span-7", "aspect-[4/5]",   "(max-width: 768px) 50vw, 58vw"],
+  ["col-span-6  md:col-span-5", "aspect-[4/5] md:aspect-auto",   "(max-width: 768px) 50vw, 42vw"],
+  ["col-span-6  md:col-span-7", "aspect-[4/5]",                  "(max-width: 768px) 50vw, 58vw"],
 
-  ["col-span-6  md:col-span-4", "aspect-square",  "(max-width: 768px) 50vw, 33vw"],
-  ["col-span-6  md:col-span-4", "aspect-square",  "(max-width: 768px) 50vw, 33vw"],
-  ["col-span-12 md:col-span-4", "aspect-square",  "(max-width: 768px) 100vw, 33vw"],
+  ["col-span-6  md:col-span-4", "aspect-square",                 "(max-width: 768px) 50vw, 33vw"],
+  ["col-span-6  md:col-span-4", "aspect-square",                 "(max-width: 768px) 50vw, 33vw"],
+  ["col-span-12 md:col-span-4", "aspect-square",                 "(max-width: 768px) 100vw, 33vw"],
 
-  ["col-span-12 md:col-span-5", "aspect-[4/5]",   "(max-width: 768px) 100vw, 42vw"],
-  ["col-span-12 md:col-span-7", "aspect-[4/5]",   "(max-width: 768px) 100vw, 58vw"],
+  ["col-span-12 md:col-span-5", "aspect-[4/5] md:aspect-auto",   "(max-width: 768px) 100vw, 42vw"],
+  ["col-span-12 md:col-span-7", "aspect-[4/5]",                  "(max-width: 768px) 100vw, 58vw"],
 
-  ["col-span-6  md:col-span-6", "aspect-[4/3]",   "(max-width: 768px) 50vw, 50vw"],
-  ["col-span-6  md:col-span-6", "aspect-[4/3]",   "(max-width: 768px) 50vw, 50vw"],
+  ["col-span-6  md:col-span-6", "aspect-[4/3]",                  "(max-width: 768px) 50vw, 50vw"],
+  ["col-span-6  md:col-span-6", "aspect-[4/3]",                  "(max-width: 768px) 50vw, 50vw"],
 
-  ["col-span-12 md:col-span-8", "aspect-[16/10]", "(max-width: 768px) 100vw, 66vw"],
-  ["col-span-12 md:col-span-4", "aspect-[16/10]", "(max-width: 768px) 100vw, 33vw"],
+  ["col-span-12 md:col-span-8", "aspect-[16/10]",                "(max-width: 768px) 100vw, 66vw"],
+  ["col-span-12 md:col-span-4", "aspect-[16/10] md:aspect-auto", "(max-width: 768px) 100vw, 33vw"],
 
-  ["col-span-6  md:col-span-4", "aspect-square",  "(max-width: 768px) 50vw, 33vw"],
-  ["col-span-6  md:col-span-4", "aspect-square",  "(max-width: 768px) 50vw, 33vw"],
-  ["col-span-12 md:col-span-4", "aspect-square",  "(max-width: 768px) 100vw, 33vw"],
+  ["col-span-6  md:col-span-4", "aspect-square",                 "(max-width: 768px) 50vw, 33vw"],
+  ["col-span-6  md:col-span-4", "aspect-square",                 "(max-width: 768px) 50vw, 33vw"],
+  ["col-span-12 md:col-span-4", "aspect-square",                 "(max-width: 768px) 100vw, 33vw"],
 ];
 
 /* The first row paints straight from the HTML. Anything revealed on scroll is
@@ -124,7 +126,9 @@ export default function Home() {
                   className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
                   sizes={imgSizes}
                   placeholder="blur"
-                  priority={eager}
+                  priority={i === 0}
+                  fetchPriority={i === 0 ? "high" : undefined}
+                  loading={eager ? "eager" : "lazy"}
                 />
               </button>
             );

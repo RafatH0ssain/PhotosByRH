@@ -17,7 +17,7 @@ Type is the system font, tracking set per size, Anton for the wordmark. Tokens l
 
 The palette is monochrome, so UI colour never competes with the photographs. The primary action is a white pill with a black label at 19.3:1, and every text colour clears WCAG AA.
 
-Motion stays off the critical path: hero entrances are CSS, above-the-fold images are never hidden behind a reveal, and the lightbox mounts only the clicked photo.
+Motion stays off the critical path: hero entrances are CSS, above-the-fold images are never hidden behind a reveal, and the lightbox is lazy-loaded so Framer Motion stays off the initial load.
 
 ## Development
 

@@ -1,8 +1,10 @@
 "use client";
 import { useState, type CSSProperties } from "react";
+import dynamic from "next/dynamic";
 import Image, { type StaticImageData } from "next/image";
-import Lightbox from "@/components/Lightbox";
 import { useReveal } from "@/components/useReveal";
+
+const Lightbox = dynamic(() => import("@/components/Lightbox"), { ssr: false });
 
 interface GalleryProps {
   title:     string;
@@ -60,7 +62,9 @@ export default function Gallery({ title, blurb, images, altPrefix }: GalleryProp
                 className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
                 sizes="(max-width: 768px) 50vw, 33vw"
                 placeholder="blur"
-                priority={eager}
+                priority={i === 0}
+                fetchPriority={i === 0 ? "high" : undefined}
+                loading={eager ? "eager" : "lazy"}
               />
             </button>
           );
