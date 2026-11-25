@@ -13,19 +13,25 @@ import img9 from "@/public/Film/Film (9).webp";
 import img10 from "@/public/Film/Film (10).webp";
 import img11 from "@/public/Film/Film (11).webp";
 import img12 from "@/public/Film/Film (12).webp";
+import img13 from "@/public/Film/Film (13).webp";
+import img14 from "@/public/Film/Film (14).webp";
+import img15 from "@/public/Film/Film (15).webp";
 
 const images = [
   img1,
   img2,
+  img13,
   img3,
   img4,
   img5,
   img6,
+  img14,
   img7,
   img8,
   img9,
   img10,
   img11,
+  img15,
   img12,
 ];
 

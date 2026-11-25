@@ -13,13 +13,18 @@ import img9 from "@/public/Personal Event(s)/Personal (9).webp";
 import img10 from "@/public/Personal Event(s)/Personal (10).webp";
 import img11 from "@/public/Personal Event(s)/Personal (11).webp";
 import img12 from "@/public/Personal Event(s)/Personal (12).webp";
+import img13 from "@/public/Personal Event(s)/Personal (13).webp";
+import img14 from "@/public/Personal Event(s)/Personal (14).webp";
+import img15 from "@/public/Personal Event(s)/Personal (15).webp";
 
 const images = [
   img1,
+  img13,
   img2,
   img3,
   img4,
   img5,
+  img15,
   img6,
   img7,
   img8,
@@ -27,6 +32,7 @@ const images = [
   img10,
   img11,
   img12,
+  img14,
 ];
 
 export default images;
