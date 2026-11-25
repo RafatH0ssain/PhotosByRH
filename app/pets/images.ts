@@ -10,15 +10,21 @@ import img6 from "@/public/Pets/Pets (6).webp";
 import img7 from "@/public/Pets/Pets (7).webp";
 import img8 from "@/public/Pets/Pets (8).webp";
 import img9 from "@/public/Pets/Pets (9).webp";
+import img10 from "@/public/Pets/Pets (10).webp";
+import img11 from "@/public/Pets/Pets (11).webp";
+import img12 from "@/public/Pets/Pets (12).webp";
 
 const images = [
   img1,
+  img10,
   img2,
   img3,
   img4,
+  img12,
   img5,
   img6,
   img7,
+  img11,
   img8,
   img9,
 ];
