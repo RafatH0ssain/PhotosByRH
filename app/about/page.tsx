@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import mePortrait from "@/public/About/Me.webp";
 
 /* No "use client": this page has no interactivity left. The entrance is a CSS
    animation, so it ships as pure markup with zero JavaScript. */
@@ -27,11 +28,12 @@ export default function About() {
           style={{ "--rise-delay": "160ms" } as CSSProperties}
         >
           <Image
-            src="/About/Me.webp"
+            src={mePortrait}
             alt="Portrait of Rafat"
             fill
             className="object-cover"
             sizes="(max-width: 768px) 100vw, 50vw"
+            placeholder="blur"
             priority
           />
         </div>

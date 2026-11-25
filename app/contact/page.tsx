@@ -7,13 +7,13 @@ type Status = "idle" | "sending" | "sent" | "error";
 
 const MESSAGES: Record<Exclude<Status, "idle" | "sending">, string> = {
   sent:  "Message sent. I'll get back to you shortly.",
-  error: "Something went wrong. Please try again.",
+  error: "Something went wrong. Please try again, or email rafat.click.hossain@gmail.com.",
 };
 
 const FIELD =
-  "w-full rounded-card border border-hairline bg-elevated px-4 py-3.5 text-body " +
-  "text-fg outline-none transition-[border-color,background-color] duration-200 " +
-  "ease-out placeholder:text-fg-4 focus:border-fg-3 focus:bg-raised";
+  "w-full rounded-card border border-white/35 bg-elevated px-4 py-3.5 text-body " +
+  "text-fg transition-[border-color,background-color] duration-200 " +
+  "ease-out placeholder:text-fg-3 focus:border-fg focus:bg-raised";
 
 export default function Contact() {
   const [status, setStatus] = useState<Status>("idle");

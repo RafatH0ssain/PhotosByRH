@@ -163,15 +163,6 @@
     transform: none;
   }
 
-  /* The lightbox drag surface. Two declarations, not one: a browser that does
-     not know `pinch-zoom` drops that line and keeps `none`, which is safe.
-     Without the fallback it would reset to `auto` and the browser would try to
-     pan the page underneath the gesture we are tracking. */
-  .drag-surface {
-    touch-action: none;
-    touch-action: pinch-zoom;
-  }
-
   /* ── Hero entrance ─────────────────────────────────────────────────────────
      A plain CSS animation, not a motion component: it starts at first paint
      instead of waiting for hydration, and runs off the main thread. */
@@ -224,11 +215,5 @@
     -webkit-backdrop-filter: none !important;
     border-color: rgba(255, 255, 255, 0.5) !important;
   }
-}
-
-/* ─── Lightbox scrim ────────────────────────────────────────────────────── */
-@keyframes lb-scrim {
-  from { opacity: 0; }
-  to   { opacity: 1; }
 }
 
